@@ -3,6 +3,7 @@ import { Text, View, ListView, TouchableWithoutFeedback, ScrollView, Image } fro
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import Swiper from 'react-native-swiper';
+import { Toolbar } from 'react-native-material-ui'
 
 import realm from '../..//db-manager'
 import DetailPage from './detail-page' 
@@ -32,6 +33,11 @@ export default class DetailView extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
+        <Toolbar
+          leftElement="arrow-back"
+          onLeftElementPress={() => this.props.navigation.goBack()}
+          centerElement=""
+        />
         <Swiper 
           loop={false} 
           style={{flex: 1}} 

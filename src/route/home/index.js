@@ -3,14 +3,17 @@ import { Text, View } from 'react-native'
 import _ from 'lodash'
 import { connect } from 'react-redux';
 import InfiniteScrollView from 'react-native-infinite-scroll-view'
+import { Toolbar } from 'react-native-material-ui'
 
 import realm from '../../db-manager'
 
 import {
   loadHot,
   loadMoreHot,
+  search,
 } from '../../action/hot'
 import Post from './post'
+
 import FlatList from '../../../node_modules/react-native/Libraries/CustomComponents/Lists/FlatList'
 
 function mapStateToProps(state) {
@@ -24,12 +27,14 @@ function mapDispatchToProps(dispatch) {
   return { 
     loadHot: () => dispatch(loadHot()),
     loadHotAppend: () => dispatch(loadHot(true)),
+    search: (term) => dispatch(search(term)),
   }
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class HomePage extends React.Component {
   state = {}
+  timeout = undefined;
 
   componentDidMount() {
     this.props.loadHot()
@@ -38,6 +43,23 @@ export default class HomePage extends React.Component {
   render() {
     return ( 
       <View>
+        <Toolbar
+          centerElement=""
+          searchable={{
+            placeholder: 'Search',
+            onChangeText: (text) => {
+              clearTimeout(this.timeout)
+              this.timeout = setTimeout(() => { 
+                this.props.search(text.trim())
+              }, 1000)
+            },
+            onSearchClosed: () => {
+              clearTimeout(this.timeout)
+              this.props.search()
+            }
+          }}
+        />
+
         <FlatList
           onLayout={this._onLayout}
           data={this.props.posts}

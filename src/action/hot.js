@@ -7,9 +7,13 @@ export const LOAD_HOT = 'LOAD_HOT'
 export const LOAD_HOT_SUCCESS = 'LOAD_HOT_SUCCESS'
 export const LOAD_HOT_APPEND_SUCCESS = 'LOAD_HOT_APPEND_SUCCESS'
 
+export const SEARCH_SET = 'SEARCH_SET'
+
 export const loadHotStart = createAction(LOAD_HOT)
 export const loadHotSuccess = createAction(LOAD_HOT_SUCCESS)
 export const loadHotAppendSuccess = createAction(LOAD_HOT_APPEND_SUCCESS)
+
+export const search = createAction(SEARCH_SET)
 
 export const loadHot = (append) => (dispatch, getState) => {
   if (getState().hot.get('isRefreshing')) return
@@ -23,6 +27,7 @@ export const loadHot = (append) => (dispatch, getState) => {
       realm.write(() => {
         response.data.children
           .map(post => post.data)
+          .filter(post => !post.is_self)
           .forEach(post => {
             let thumbnail = _.get(post, 'preview.images[0].source')
             let {title, score, author, id, permalink, created, url} = post

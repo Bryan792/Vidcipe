@@ -5,6 +5,7 @@ import {
   LOAD_HOT,
   LOAD_HOT_SUCCESS,
   LOAD_HOT_APPEND_SUCCESS,
+  SEARCH_SET,
 } from '../action/hot'
 
 const initialState = Immutable.fromJS({
@@ -24,6 +25,11 @@ export default (state = initialState, action) => {
       return state
         .set('after', action.payload.after)
         .set('isRefreshing', false)
+    case SEARCH_SET:
+      if (action.payload)
+        return state.set('posts', realm.objects('Post').sorted('score', true).filtered(`title CONTAINS[c] "${action.payload}"`))
+      else
+        return state.set('posts', initialState.get('posts'))
     default:
       return state
   }
