@@ -78,7 +78,7 @@ const Score = styled.Text`
 `
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class DetailPage extends React.Component {
+export default class DetailPage extends React.PureComponent {
 
   post = realm.objectForPrimaryKey('Post', this.props.postId)
 

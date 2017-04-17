@@ -14,7 +14,7 @@ import {
 } from '../../action/hot'
 import Post from './post'
 
-import FlatList from '../../../node_modules/react-native/Libraries/CustomComponents/Lists/FlatList'
+import VirtualizedList from '../../../node_modules/react-native/Libraries/CustomComponents/Lists/VirtualizedList'
 
 function mapStateToProps(state) {
   return { 
@@ -61,7 +61,8 @@ export default class HomePage extends React.Component {
         />
       
 
-        <FlatList
+        <VirtualizedList
+          maxToRenderPerBatch={2}
           onLayout={this._onLayout}
           data={this.props.posts}
           renderItem={({item, index}) => {
@@ -87,7 +88,6 @@ export default class HomePage extends React.Component {
   }
 
   _onRefresh = () => {
-    console.log('refresh')
     this.props.loadHot()
   }
 

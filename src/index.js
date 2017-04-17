@@ -11,6 +11,37 @@ import detailReducer from './reducer/detail'
 import commentsReducer from './reducer/comments'
 import App from './app'
 
+if (!__DEV__) {
+  // eslint-disable-line no-undef
+  [
+    'assert',
+    'clear',
+    'count',
+    'debug',
+    'dir',
+    'dirxml',
+    'error',
+    'exception',
+    'group',
+    'groupCollapsed',
+    'groupEnd',
+    'info',
+    'log',
+    'profile',
+    'profileEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'timeStamp',
+    'trace',
+    'warn',
+  ].forEach(methodName => {
+    console[methodName] = () => {
+      /* noop */
+    };
+  });
+}
+
 const uiTheme = {
     palette: {
         primaryColor: COLOR.green500,

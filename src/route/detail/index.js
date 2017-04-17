@@ -28,9 +28,22 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DetailView extends React.Component {
-  state={index: +this.props.navigation.state.params.index}
+  state={
+    index: +this.props.navigation.state.params.index,
+  }
 
   render() {
+    let pages = []
+    for (let index = 0; index < this.props.posts.length; index++) {
+      pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= 3 && (
+          <DetailPage
+            postId={this.props.posts[index].id}
+            key={this.props.posts[index].id}
+            shouldGetVideo={this.state.index === index}
+            dimensions={this.state.dimensions}
+          />
+      ))
+    }
     return (
       <View style={{flex: 1}}>
         <Toolbar
@@ -47,18 +60,7 @@ export default class DetailView extends React.Component {
           }}
           onLayout={this._onLayout}
         >
-          {this.props.posts
-            .map(({id}, index) => (
-              Math.abs(this.state.index - index) <= 3 && (
-          <DetailPage
-            postId={id}
-            key={id}
-            shouldGetVideo={this.state.index === index}
-            dimensions={this.state.dimensions}
-          />
-              )
-            )
-          )}
+          {pages}
         </Swiper>
       </View>
     )
