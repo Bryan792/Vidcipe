@@ -39,6 +39,7 @@
     "react-navigation": "git+https://github.com/react-community/react-navigation.git#7edd9a7",
     "react-redux": "^5.0.4",
     "readable-stream": "^1.0.33",
+    "realm": "^1.2.0",
     "redux": "^3.6.0",
     "redux-actions": "^2.0.1",
     "redux-thunk": "^2.2.0",
