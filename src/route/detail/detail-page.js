@@ -1,9 +1,10 @@
 import React from 'react'
-import { Text, View, ListView, TouchableWithoutFeedback, ScrollView, Image } from 'react-native'
+import { Text, View, ListView, TouchableWithoutFeedback, ScrollView } from 'react-native'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import styled from 'styled-components/native'
 import Video from 'react-native-video'
+import CachedImage from 'react-native-cached-image'
 
 import Swiper from 'react-native-swiper';
 
@@ -107,10 +108,9 @@ export default class DetailPage extends React.Component {
           <View style={{
             height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
             width: this.props.dimensions.width,
-            backgroundColor: 'blue',
           }}>
           {(!this.props.shouldGetVideo || !this.state.isLoaded) &&
-          <Image 
+          <CachedImage 
             style={{flex: 1}}
             source={{ uri: post.thumbnailUrl }} 
           />

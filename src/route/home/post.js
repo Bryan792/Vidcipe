@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Image, TouchableHighlight } from 'react-native'
+import CachedImage from 'react-native-cached-image'
 import styled from 'styled-components/native'
 import FitImage from 'react-native-fit-image'
 
@@ -60,9 +61,8 @@ class FullPost extends React.Component {
         <View style={{
           height: thumbnailHeight / thumbnailWidth * this.props.dimensions.width,
           width: this.props.dimensions.width,
-          backgroundColor: 'blue',
         }}>
-          <Image 
+          <CachedImage 
             style={{
               flex: 1
             }} 
