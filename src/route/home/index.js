@@ -4,6 +4,8 @@ import _ from 'lodash'
 import { connect } from 'react-redux';
 import InfiniteScrollView from 'react-native-infinite-scroll-view'
 
+import realm from '../../db-manager'
+
 import {
   loadHot,
   loadMoreHot,
@@ -13,7 +15,7 @@ import FlatList from '../../../node_modules/react-native/Libraries/CustomCompone
 
 function mapStateToProps(state) {
   return { 
-    posts: state.hot.get('posts') || [], 
+    posts: state.hot.get('posts'), 
     isRefreshing: state.hot.get('isRefreshing'),
   }
 }
@@ -27,6 +29,8 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class HomePage extends React.Component {
+  state = {}
+
   componentDidMount() {
     this.props.loadHot()
   }
@@ -35,15 +39,17 @@ export default class HomePage extends React.Component {
     return ( 
       <View>
         <FlatList
+          onLayout={this._onLayout}
           data={this.props.posts}
           renderItem={({item, index}) => {
-            let thumbnail = _.get(item, 'data.preview.images[0].source')
-            if (!thumbnail) thumbnail = {url: item.data.thumbnail}
             return (
               <Post
-                thumbnail={thumbnail}
-                score={item.data.score}
-                title={item.data.title} 
+                dimensions={this.state.dimensions}
+                thumbnailUrl={item.thumbnailUrl}
+                thumbnailWidth={item.thumbnailWidth}
+                thumbnailHeight={item.thumbnailHeight}
+                score={item.score}
+                title={item.title} 
                 onPostSelected={() => this.props.navigation.navigate('Detail', {index: index})}
               />
             )
@@ -51,7 +57,7 @@ export default class HomePage extends React.Component {
           refreshing={this.props.isRefreshing}
           onRefresh={this._onRefresh}
           onEndReached={this.props.loadHotAppend}
-          keyExtractor={(item, index) => item.data.id}
+          keyExtractor={(item, index) => item.id}
         />
       </View>
     )
@@ -60,5 +66,11 @@ export default class HomePage extends React.Component {
   _onRefresh = () => {
     console.log('refresh')
     this.props.loadHot()
+  }
+
+  _onLayout = event => {
+    if (this.state.dimensions) return // layout was already called
+    let {width, height} = event.nativeEvent.layout
+    this.setState({dimensions: {width, height}})
   }
 }

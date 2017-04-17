@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import realm from '../db-manager'
 
 import {
   LOAD_HOT,
@@ -7,6 +8,7 @@ import {
 } from '../action/hot'
 
 const initialState = Immutable.fromJS({
+  posts: realm.objects('Post').sorted('created', true),
   isRefreshing: false,
 })
 
@@ -16,12 +18,10 @@ export default (state = initialState, action) => {
       return state.set('isRefreshing', true)
     case LOAD_HOT_SUCCESS:
       return state
-        .set('posts', action.payload.posts.filter(post => !post.data.is_self))
         .set('after', action.payload.after)
         .set('isRefreshing', false)
     case LOAD_HOT_APPEND_SUCCESS:
       return state
-        .set('posts', [...state.get('posts'), ...action.payload.posts.filter(post => !post.data.is_self)])
         .set('after', action.payload.after)
         .set('isRefreshing', false)
     default:

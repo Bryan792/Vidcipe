@@ -5,12 +5,11 @@ export const LOAD_DETAIL_SUCCESS = 'LOAD_DETAIL_SUCCESS'
 
 export const loadDetailSuccess = createAction(LOAD_DETAIL_SUCCESS)
 
-export const loadDetail = (postIdx) => (dispatch, getState) => {
-  let post = getState().hot.get('posts')[postIdx]
-  let id = post.data.id
+export const loadDetail = (post) => (dispatch, getState) => {
+  let id = post.id
   //Cache never expires
   if (getState().detail.includes(id)) return;
-  let url = new URL(post.data.url)
+  let url = new URL(post.url)
   switch (url.hostname) {
     case 'gfycat.com':
       fetch(`https://gfycat.com/cajax/get${url.pathname}`)

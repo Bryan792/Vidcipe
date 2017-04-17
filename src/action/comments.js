@@ -6,12 +6,11 @@ export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
 export const loadCommentsStart = createAction(LOAD_COMMENTS)
 export const loadCommentsSuccess = createAction(LOAD_COMMENTS_SUCCESS)
 
-export const loadComments = (postIdx) => (dispatch, getState) => {
-  let post = getState().hot.get('posts')[postIdx]
-  let id = post.data.id
+export const loadComments = (post) => (dispatch, getState) => {
+  let id = post.id
   if (getState().comments.includes(id)) return
   dispatch(loadCommentsStart({id}))
-  fetch(`https://reddit.com${post.data.permalink}.json?sort=confidence&limit=10&depth=1&raw_json=1`)
+  fetch(`https://reddit.com${post.permalink}.json?sort=confidence&limit=10&depth=1&raw_json=1`)
     .then(response => response.json())
     .then(response => response[1].data.children
       .filter(comment => comment.kind === 't1')

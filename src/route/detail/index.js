@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash'
 import Swiper from 'react-native-swiper';
 
+import realm from '../..//db-manager'
 import DetailPage from './detail-page' 
 
 import {
@@ -12,7 +13,7 @@ import {
 
 function mapStateToProps(state) {
   return { 
-    posts: state.hot.get('posts') || [],
+    posts: state.hot.get('posts'),
     videoUri: (id) => state.detail.get(id),
     state: state.detail,
   }
@@ -29,7 +30,6 @@ export default class DetailView extends React.Component {
   state={index: +this.props.navigation.state.params.index}
 
   render() {
-    console.log(this.state.index)
     return (
       <View style={{flex: 1}}>
         <Swiper 
@@ -41,16 +41,18 @@ export default class DetailView extends React.Component {
           }}
           onLayout={this._onLayout}
         >
-          {this.props.posts.map((rowData, index) => (
-          Math.abs(this.state.index - index) <= 2 && (
+          {this.props.posts
+            .map(({id}, index) => (
+              Math.abs(this.state.index - index) <= 3 && (
           <DetailPage
-            postIndex={index}
+            postId={id}
+            key={id}
             shouldGetVideo={this.state.index === index}
-            key={rowData.data.title}
             dimensions={this.state.dimensions}
           />
-          )
-          ))}
+              )
+            )
+          )}
         </Swiper>
       </View>
     )

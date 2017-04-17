@@ -52,26 +52,23 @@ const CompactPost = ({score, title, imgUri, compact, onPostSelected}) => (
 class FullPost extends React.Component {
   state = {}
 
-  onLayout = event => {
-    if (this.state.dimensions) return // layout was already called
-    let {width, height} = event.nativeEvent.layout
-    this.setState({dimensions: {width: width-10, height: height-10}})
-  }
-  
   render() {
-    let {score, title, thumbnail, compact} = this.props
+    let {score, title, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact} = this.props
     return (
-      <PostContainer 
-        onLayout={this.onLayout}
-      >
-        {thumbnail.width && this.state.dimensions &&
-        <Image 
-          style={{
-            height: thumbnail.height / thumbnail.width * this.state.dimensions.width,
-            width: this.state.dimensions.width,
-          }} 
-          source={{ uri: thumbnail.url }} 
-        />
+      <PostContainer>
+        {thumbnailHeight > 0 && this.props.dimensions &&
+        <View style={{
+          height: thumbnailHeight / thumbnailWidth * this.props.dimensions.width,
+          width: this.props.dimensions.width,
+          backgroundColor: 'blue',
+        }}>
+          <Image 
+            style={{
+              flex: 1
+            }} 
+            source={{ uri: thumbnailUrl }} 
+          />
+        </View>
         }
         <Row>
           <Score>{score}</Score>

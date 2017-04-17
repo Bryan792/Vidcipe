@@ -7,6 +7,7 @@ import Video from 'react-native-video'
 
 import Swiper from 'react-native-swiper';
 
+import realm from '../../db-manager'
 import Post from '../home/post'
 
 import {
@@ -27,8 +28,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return { 
-    loadDetail: (postIdx) => dispatch(loadDetail(postIdx)),
-    loadComments: (postIdx) => dispatch(loadComments(postIdx)),
+    loadDetail: (post) => dispatch(loadDetail(post)),
+    loadComments: (post) => dispatch(loadComments(post)),
   }
 }
 
@@ -77,24 +78,22 @@ const Score = styled.Text`
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DetailPage extends React.Component {
+
+  post = realm.objectForPrimaryKey('Post', this.props.postId)
+
   state = {
   }
 
   componentDidMount() {
-    const post = this.props.posts[this.props.postIndex]
-    console.log('mounted', this.props.postIndex)
-    this.props.loadDetail(this.props.postIndex)
-    this.props.loadComments(this.props.postIndex)
+    this.props.loadDetail(this.post)
+    this.props.loadComments(this.post)
   }
 
   render() {
-    const post = this.props.posts[this.props.postIndex]
-    const { videoUri, getComments } = this.props
-    const videoInfo = videoUri(post.data.id)
-    const comments = getComments(post.data.id)
-    let thumbnail = _.get(post, 'data.preview.images[0].source')
-    if (!thumbnail) thumbnail = {url: post.data.thumbnail}
-    console.log('loading', this.props.postIndex)
+    const post = this.post
+    const { videoUri, getComments, postId } = this.props
+    const videoInfo = videoUri(postId)
+    const comments = getComments(postId)
     return ( 
       <View
         style={{
@@ -105,17 +104,15 @@ export default class DetailPage extends React.Component {
       >
         <ScrollView>
           {this.props.dimensions &&
-          <View
-            style={{
-              height: thumbnail.height / thumbnail.width * this.props.dimensions.width,
-              width: this.props.dimensions.width,
-              backgroundColor: 'blue',
-            }} 
-          >
+          <View style={{
+            height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
+            width: this.props.dimensions.width,
+            backgroundColor: 'blue',
+          }}>
           {(!this.props.shouldGetVideo || !this.state.isLoaded) &&
           <Image 
             style={{flex: 1}}
-            source={{ uri: thumbnail.url }} 
+            source={{ uri: post.thumbnailUrl }} 
           />
           }
           {videoInfo && this.props.shouldGetVideo &&
@@ -129,7 +126,7 @@ export default class DetailPage extends React.Component {
           }
           </View>
           }
-          <Title>{post.data.title}</Title>
+          <Title>{post.title}</Title>
       {comments && comments.map(comment => (
           <Comment key={comment}>{comment}</Comment>
       ))}
