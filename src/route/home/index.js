@@ -42,7 +42,7 @@ export default class HomePage extends React.Component {
 
   render() {
     return ( 
-      <View>
+      <View style={{flex: 1}}>
         <Toolbar
           centerElement=""
           searchable={{
@@ -59,6 +59,7 @@ export default class HomePage extends React.Component {
             }
           }}
         />
+      
 
         <FlatList
           onLayout={this._onLayout}

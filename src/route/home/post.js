@@ -3,17 +3,18 @@ import { View, Text, Image, TouchableHighlight } from 'react-native'
 import CachedImage from 'react-native-cached-image'
 import styled from 'styled-components/native'
 import FitImage from 'react-native-fit-image'
+import { Card } from 'react-native-material-ui'
 
 const PostRow = styled.View`
   flex-direction: row;
   align-items: center;
   height: 60;
-  padding: 5;
   background-color: white;
 `
 
 const Title = styled.Text`
-  color: red;
+  flex: 1;
+  font-size: 20;
 `
 
 const Score = styled.Text`
@@ -32,14 +33,15 @@ const BigImage = styled.Image`
 
 const PostContainer = styled.View`
   align-items: stretch;
-  padding: 5;
-  background-color: white;
+  flex: 1;
 `
 
 const Row = styled.View`
   flex-direction: row;
   justify-content: flex-start;
-  background-color: grey;
+  align-items: center;
+  padding: 10 10;
+  flex: 1;
 `
 
 const CompactPost = ({score, title, imgUri, compact, onPostSelected}) => (
@@ -51,12 +53,11 @@ const CompactPost = ({score, title, imgUri, compact, onPostSelected}) => (
 )
 
 class FullPost extends React.Component {
-  state = {}
-
   render() {
     let {score, title, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact} = this.props
     return (
       <PostContainer>
+        <Card>
         {thumbnailHeight > 0 && this.props.dimensions &&
         <View style={{
           height: thumbnailHeight / thumbnailWidth * this.props.dimensions.width,
@@ -74,6 +75,7 @@ class FullPost extends React.Component {
           <Score>{score}</Score>
           <Title>{title}</Title>
         </Row>
+        </Card>
       </PostContainer>
     )
   }
@@ -84,8 +86,9 @@ export default class Post extends React.Component {
     return (
       <TouchableHighlight
         onPress={this.props.onPostSelected}
+        style={{flex: 1}}
       >
-        <View>
+        <View style={{flex: 1}}>
         {this.props.compact ? <CompactPost {...this.props} /> : <FullPost {...this.props} />}
         </View>
       </TouchableHighlight>
