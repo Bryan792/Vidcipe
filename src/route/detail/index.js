@@ -42,7 +42,7 @@ export default class DetailView extends React.Component {
   render() {
     let pages = []
     for (let index = 0; index < this.props.posts.length; index++) {
-      pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= 3 && (
+      pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= (this.state.placeholder ? 0 : 2) && (
           <DetailPage
             postId={this.props.posts[index].id}
             key={this.props.posts[index].id}
