@@ -67,7 +67,7 @@ export default class HomePage extends React.Component {
           data={this.props.posts}
           renderItem={({item, index}) => {
             return (
-              <Post compact
+              <Post
                 dimensions={this.state.dimensions}
                 thumbnailUrl={item.thumbnailUrl}
                 thumbnailWidth={item.thumbnailWidth}

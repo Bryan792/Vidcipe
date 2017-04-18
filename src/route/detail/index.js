@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, ListView, TouchableWithoutFeedback, ScrollView, Image } from 'react-native'
+import { InteractionManager, Text, View, ListView, TouchableWithoutFeedback, ScrollView, Image } from 'react-native'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import Swiper from 'react-native-swiper';
@@ -30,6 +30,13 @@ function mapDispatchToProps(dispatch) {
 export default class DetailView extends React.Component {
   state={
     index: +this.props.navigation.state.params.index,
+    renderPlaceholderOnly: true,
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({renderPlaceholderOnly: false});
+    });
   }
 
   render() {
@@ -51,6 +58,7 @@ export default class DetailView extends React.Component {
           onLeftElementPress={() => this.props.navigation.goBack()}
           centerElement=""
         />
+        {!this.state.renderPlaceholderOnly &&
         <Swiper 
           loop={false} 
           style={{flex: 1}} 
@@ -62,6 +70,7 @@ export default class DetailView extends React.Component {
         >
           {pages}
         </Swiper>
+        }
       </View>
     )
   }
