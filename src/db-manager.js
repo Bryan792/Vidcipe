@@ -13,6 +13,7 @@ const PostSchema = {
     thumbnailUrl: 'string',
     thumbnailWidth: 'int',
     thumbnailHeight: 'int',
+    backupThumbnailUrl: 'string',
     url: 'string',
     comments: {type: 'list', objectType: 'Comment'},
     videoUrl: {type: 'string', optional: true},

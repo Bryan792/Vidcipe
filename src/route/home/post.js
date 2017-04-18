@@ -1,9 +1,10 @@
 import React from 'react'
 import { Linking, View, Text, Image, TouchableHighlight } from 'react-native'
-import CachedImage from 'react-native-cached-image'
 import styled from 'styled-components/native'
 import FitImage from 'react-native-fit-image'
 import { Card, Divider } from 'react-native-material-ui'
+
+import ThumbnailImage from '../../components/thumbnail-image'
 
 const PostRow = styled.View`
   flex: 1;
@@ -44,18 +45,19 @@ const Row = styled.View`
   flex: 1;
 `
 
-const CompactPost = ({score, title, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact}) => (
+const CompactPost = ({score, title, backupThumbnailUrl, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact}) => (
   <PostContainer>
     <PostRow>
-      <CachedImage
+      <View
         style={{
           height: 50,
           width: 50,
           marginLeft: 16,
           marginRight: 16,
         }}
-        source={{ uri: thumbnailUrl }}
-      />
+      >
+        <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
+      </View>
       <Title>{title}</Title>
     </PostRow>
     <Divider />
@@ -63,8 +65,12 @@ const CompactPost = ({score, title, thumbnailUrl, thumbnailHeight, thumbnailWidt
 )
 
 class FullPost extends React.Component {
+  state = {}
+
   render() {
-    let {score, title, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact} = this.props
+    let {score, title, backupThumbnailUrl, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact} = this.props
+    let uri = this.state.imageFail ? backupThumbnailUrl : thumbnailUrl
+
     return (
       <PostContainer>
         <Card>
@@ -73,12 +79,7 @@ class FullPost extends React.Component {
           height: thumbnailHeight / thumbnailWidth * this.props.dimensions.width,
           width: this.props.dimensions.width,
         }}>
-          <CachedImage 
-            style={{
-              flex: 1
-            }} 
-            source={{ uri: thumbnailUrl }} 
-          />
+          <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
         </View>
         }
         <Row>

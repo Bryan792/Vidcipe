@@ -61,7 +61,6 @@ export default class HomePage extends React.Component {
             }
           }}
         />
-      
 
         <VirtualizedList
           maxToRenderPerBatch={2}
@@ -71,12 +70,16 @@ export default class HomePage extends React.Component {
             return (
               <Post
                 dimensions={this.state.dimensions}
+                backupThumbnailUrl={item.backupThumbnailUrl}
                 thumbnailUrl={item.thumbnailUrl}
                 thumbnailWidth={item.thumbnailWidth}
                 thumbnailHeight={item.thumbnailHeight}
                 score={item.score}
                 title={item.title} 
-                onPostSelected={() => this.props.navigation.navigate('Detail', {index: index})}
+                onPostSelected={() => {
+                  console.log(item)
+                  this.props.navigation.navigate('Detail', {index: index})}
+                }
               />
             )
           }}

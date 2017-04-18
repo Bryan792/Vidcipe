@@ -12,6 +12,7 @@ import Swiper from 'react-native-swiper';
 
 import realm from '../../db-manager'
 import Post from '../home/post'
+import ThumbnailImage from '../../components/thumbnail-image'
 
 import {
   loadDetail,
@@ -119,6 +120,7 @@ export default class DetailPage extends React.PureComponent {
   render() {
     const post = this.post
     const { postId, videoInfo, comments } = this.props
+    const { backupThumbnailUrl, thumbnailUrl } = post
     return ( 
       <View
         style={{
@@ -140,10 +142,7 @@ export default class DetailPage extends React.PureComponent {
             width: this.props.dimensions.width,
           }}>
           {(!this.props.shouldGetVideo || !this.state.isLoaded) &&
-          <CachedImage 
-            style={{flex: 1}}
-            source={{ uri: post.thumbnailUrl }} 
-          />
+            <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
           }
           {videoInfo && this.props.shouldGetVideo &&
           <FitVideo 

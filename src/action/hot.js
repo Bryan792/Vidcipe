@@ -32,6 +32,7 @@ export const loadHot = (append) => (dispatch, getState) => {
             realm.create('Post', {
               ...{title, score, author, id, permalink, url},
               created: new Date(created),
+              backupThumbnailUrl: post.thumbnail,
               thumbnailUrl: thumbnail ? thumbnail.url : post.thumbnail,
               thumbnailWidth: thumbnail ? thumbnail.width : -1,
               thumbnailHeight: thumbnail ? thumbnail.height : -1,
