@@ -11,6 +11,7 @@ import {
 const initialState = Immutable.fromJS({
   posts: realm.objects('Post').sorted('created', true),
   isRefreshing: false,
+  length: 25,
 })
 
 export default (state = initialState, action) => {
@@ -23,6 +24,7 @@ export default (state = initialState, action) => {
         .set('isRefreshing', false)
     case LOAD_HOT_APPEND_SUCCESS:
       return state
+        .set('length', state.get('length') + 25)
         .set('after', action.payload.after)
         .set('isRefreshing', false)
     case SEARCH_SET:

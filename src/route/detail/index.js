@@ -13,10 +13,9 @@ import {
 } from '../../action/detail'
 
 function mapStateToProps(state) {
-  return { 
+  return {
     posts: state.hot.get('posts'),
-    videoUri: (id) => state.detail.get(id),
-    state: state.detail,
+    length: state.hot.get('length')
   }
 }
 
@@ -40,12 +39,13 @@ export default class DetailView extends React.Component {
   }
 
   render() {
+    let posts = this.props.posts.slice(0, this.props.length)
     let pages = []
-    for (let index = 0; index < this.props.posts.length; index++) {
+    for (let index = 0; index < posts.length; index++) {
       pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= (this.state.placeholder ? 0 : 2) && (
           <DetailPage
-            postId={this.props.posts[index].id}
-            key={this.props.posts[index].id}
+            postId={posts[index].id}
+            key={posts[index].id}
             shouldGetVideo={this.state.index === index}
             dimensions={this.state.dimensions}
           />

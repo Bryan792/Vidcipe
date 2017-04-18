@@ -18,7 +18,8 @@ import VirtualizedList from '../../../node_modules/react-native/Libraries/Custom
 
 function mapStateToProps(state) {
   return { 
-    posts: state.hot.get('posts'), 
+    posts: state.hot.get('posts'),
+    length: state.hot.get('length'),
     isRefreshing: state.hot.get('isRefreshing'),
   }
 }
@@ -32,15 +33,16 @@ function mapDispatchToProps(dispatch) {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class HomePage extends React.Component {
+export default class HomePage extends React.PureComponent {
   state = {}
   timeout = undefined;
 
   componentDidMount() {
-    this.props.loadHot()
+    //this.props.loadHot()
   }
 
   render() {
+    let posts = this.props.posts.slice(0, this.props.length)
     return ( 
       <View style={{
         flex: 1
@@ -65,10 +67,10 @@ export default class HomePage extends React.Component {
         <VirtualizedList
           maxToRenderPerBatch={2}
           onLayout={this._onLayout}
-          data={this.props.posts}
+          data={posts}
           renderItem={({item, index}) => {
             return (
-              <Post
+              <Post compact
                 dimensions={this.state.dimensions}
                 backupThumbnailUrl={item.backupThumbnailUrl}
                 thumbnailUrl={item.thumbnailUrl}
