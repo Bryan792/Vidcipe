@@ -29,9 +29,13 @@ export default (state = initialState, action) => {
         .set('isRefreshing', false)
     case SEARCH_SET:
       if (action.payload)
-        return state.set('posts', realm.objects('Post').sorted('score', true).filtered(`title CONTAINS[c] "${action.payload}"`))
+        return state
+          .set('posts', realm.objects('Post').filtered(`title CONTAINS[c] "${action.payload}"`).sorted('score', true))
+          .set('length', initialState.get('length'))
       else
-        return state.set('posts', initialState.get('posts'))
+        return state
+          .set('posts', initialState.get('posts'))
+          .set('length', initialState.get('length'))
     default:
       return state
   }
