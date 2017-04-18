@@ -77,7 +77,6 @@ export default class HomePage extends React.Component {
                 score={item.score}
                 title={item.title} 
                 onPostSelected={() => {
-                  console.log(item)
                   this.props.navigation.navigate('Detail', {index: index})}
                 }
               />

@@ -25,8 +25,6 @@ export const loadComments = (post) => (dispatch, getState) => {
       })
     ))
     .then(comments => {
-
-      post = realm.objectForPrimaryKey('Post', id)
       realm.write(() => {
         post.comments = comments
       })

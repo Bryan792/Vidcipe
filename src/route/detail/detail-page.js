@@ -49,13 +49,13 @@ class FitVideo extends React.Component {
   }
 
   render() {
-    const { videoInfo, onLoad } = this.props
+    const { videoUrl, videoHeight, videoWidth, onLoad } = this.props
     return (
       <TouchableWithoutFeedback
         onPress={() => this.setState({paused: !this.state.paused})}
       >
         <Video
-          source={{ uri: videoInfo.videoUrl }}
+          source={{ uri: videoUrl }}
           rate={1.0}
           volume={1.0}
           muted={false}
@@ -63,7 +63,7 @@ class FitVideo extends React.Component {
           resizeMode="contain"
           repeat
           style={{
-            height: videoInfo.height / videoInfo.width * this.props.width,
+            height: videoHeight / videoWidth * this.props.width,
           }}
           onLoad={onLoad}
         />
@@ -120,7 +120,7 @@ export default class DetailPage extends React.PureComponent {
   render() {
     const post = this.post
     const { postId, videoInfo, comments } = this.props
-    const { backupThumbnailUrl, thumbnailUrl } = post
+    const { backupThumbnailUrl, thumbnailUrl, videoUrl, videoWidth, videoHeight } = post
     return ( 
       <View
         style={{
@@ -144,10 +144,10 @@ export default class DetailPage extends React.PureComponent {
           {(!this.props.shouldGetVideo || !this.state.isLoaded) &&
             <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
           }
-          {videoInfo && this.props.shouldGetVideo &&
+          {videoUrl && this.props.shouldGetVideo &&
           <FitVideo 
-            videoInfo={videoInfo} 
-            width={this.state.isLoaded ? this.props.dimensions.width : 0}
+            {...{videoUrl, videoWidth, videoHeight}}
+            width={this.props.dimensions.width}
             onLoad={() => {
               this.setState({isLoaded: true})
             }}
