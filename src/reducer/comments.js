@@ -11,9 +11,9 @@ const initialState = Immutable.fromJS({
 export default (state = initialState, action) => {
   switch(action.type) {
     case LOAD_COMMENTS:
-      return state.set(action.payload.id, [])
+      return state
     case LOAD_COMMENTS_SUCCESS:
-      return state.set(action.payload.id, action.payload.comments)
+      return state.set(action.payload, Date.now())
     default:
       return state
   }

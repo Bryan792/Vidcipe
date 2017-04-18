@@ -8,7 +8,6 @@ import CachedImage from 'react-native-cached-image'
 import { Divider, Button } from 'react-native-material-ui'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 import Swiper from 'react-native-swiper';
 
 import realm from '../../db-manager'
@@ -24,7 +23,6 @@ import {
 
 function mapStateToProps(state) {
   return { 
-    posts: state.hot.get('posts') || [],
     videoUri: (id) => state.detail.get(id),
     getComments: (id) => state.comments.get(id),
   }
@@ -34,6 +32,13 @@ function mapDispatchToProps(dispatch) {
   return { 
     loadDetail: (post) => dispatch(loadDetail(post)),
     loadComments: (post) => dispatch(loadComments(post)),
+  }
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return {...ownProps, ...dispatchProps,
+    video: stateProps.videoUri(ownProps.postId),
+    comments: stateProps.getComments(ownProps.postId),
   }
 }
 
@@ -98,7 +103,7 @@ const InfoBox = styled.View`
   padding: 16;
 `
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps, mergeProps)
 export default class DetailPage extends React.PureComponent {
 
   post = realm.objectForPrimaryKey('Post', this.props.postId)
@@ -113,9 +118,7 @@ export default class DetailPage extends React.PureComponent {
 
   render() {
     const post = this.post
-    const { videoUri, getComments, postId } = this.props
-    const videoInfo = videoUri(postId)
-    const comments = getComments(postId)
+    const { postId, videoInfo, comments } = this.props
     return ( 
       <View
         style={{
@@ -155,14 +158,14 @@ export default class DetailPage extends React.PureComponent {
           }
           <InfoBox>
             <Title>{post.title}</Title>
-            {comments && comments.length > 0 &&
+            {post.comments && post.comments.length > 0 &&
             <View>
               <CommentsHeader>Comments</CommentsHeader>
-              {comments.map(comment => (
-              <View key={comment}>
+              {post.comments.map(comment => (
+              <View key={comment.body}>
                 <CommentBox>
-                  <CommentAuthor>Author</CommentAuthor>
-                  <CommentBody>{comment}</CommentBody>
+                  <CommentAuthor>{comment.author}</CommentAuthor>
+                  <CommentBody>{comment.body}</CommentBody>
                 </CommentBox>
                 <Divider />
               </View>

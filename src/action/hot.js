@@ -17,10 +17,8 @@ export const search = createAction(SEARCH_SET)
 
 export const loadHot = (append) => (dispatch, getState) => {
   if (getState().hot.get('isRefreshing')) return
-  console.log('loading hot',append)
   dispatch(loadHotStart())
   let url = 'https://www.reddit.com/r/gifrecipes.json?limit=50&raw_json=1' + (append ? `&after=${getState().hot.get('after')}` : '')
-  console.log(url)
   fetch(url)
     .then(response => response.json())
     .then(response => {
@@ -37,6 +35,7 @@ export const loadHot = (append) => (dispatch, getState) => {
               thumbnailUrl: thumbnail ? thumbnail.url : post.thumbnail,
               thumbnailWidth: thumbnail ? thumbnail.width : -1,
               thumbnailHeight: thumbnail ? thumbnail.height : -1,
+              comments: [],
             }, true);
           })
       });
