@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableHighlight } from 'react-native'
+import { Linking, View, Text, Image, TouchableHighlight } from 'react-native'
 import CachedImage from 'react-native-cached-image'
 import styled from 'styled-components/native'
 import FitImage from 'react-native-fit-image'

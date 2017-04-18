@@ -1,10 +1,13 @@
 import React from 'react'
-import { Text, View, ListView, TouchableWithoutFeedback, ScrollView } from 'react-native'
+import { Linking, Text, View, ListView, TouchableWithoutFeedback, ScrollView } from 'react-native'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import styled from 'styled-components/native'
 import Video from 'react-native-video'
 import CachedImage from 'react-native-cached-image'
+import { Divider, Button } from 'react-native-material-ui'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import Swiper from 'react-native-swiper';
 
@@ -64,17 +67,35 @@ class FitVideo extends React.Component {
 }
 
 const Title = styled.Text`
-  color: red;
+  font-size: 20;
+  margin-bottom: 16;
 `
 
-const Comment = styled.Text`
-  border-bottom-width: 1;
-  padding: 5;
+const CommentsHeader = styled.Text`
+  font-size: 17;
+`
+
+const CommentBox = styled.View`
+  padding: 5 0;
+`
+
+const CommentBody = styled.Text`
+  font-size: 14;
+`
+
+const CommentAuthor = styled.Text`
+  font-size: 14;
+  font-weight: bold;
 `
 
 const Score = styled.Text`
   color: blue;
   width: 50;
+`
+
+const InfoBox = styled.View`
+  flex: 1;
+  padding: 16;
 `
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -98,12 +119,18 @@ export default class DetailPage extends React.PureComponent {
     return ( 
       <View
         style={{
-          flex: 1,
+          position: 'absolute',
+          top: 0,
+          bottom: 74,
+          left: 0,
+          right: 0,
           alignItems: 'stretch',
           backgroundColor: 'white',
         }}
       >
-        <ScrollView>
+        <ScrollView
+          style={{flex: 1}}
+        >
           {this.props.dimensions &&
           <View style={{
             height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
@@ -126,10 +153,28 @@ export default class DetailPage extends React.PureComponent {
           }
           </View>
           }
-          <Title>{post.title}</Title>
-      {comments && comments.map(comment => (
-          <Comment key={comment}>{comment}</Comment>
-      ))}
+          <InfoBox>
+            <Title>{post.title}</Title>
+            {comments && comments.length > 0 &&
+            <View>
+              <CommentsHeader>Comments</CommentsHeader>
+              {comments.map(comment => (
+              <View key={comment}>
+                <CommentBox>
+                  <CommentAuthor>Author</CommentAuthor>
+                  <CommentBody>{comment}</CommentBody>
+                </CommentBox>
+                <Divider />
+              </View>
+              ))}
+            </View>
+            }
+            <Button 
+              icon={<Icon name="reddit" />} 
+              text="View More"
+              onPress={() => Linking.openURL('https://reddit.com' + post.permalink)}
+            />
+          </InfoBox>
         </ScrollView>
       </View>
     )

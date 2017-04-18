@@ -52,7 +52,9 @@ export default class DetailView extends React.Component {
       ))
     }
     return (
-      <View style={{flex: 1}}>
+      <View style={{
+        flex: 1,
+      }}>
         <Toolbar
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
@@ -61,7 +63,9 @@ export default class DetailView extends React.Component {
         {!this.state.renderPlaceholderOnly &&
         <Swiper 
           loop={false} 
-          style={{flex: 1}} 
+          style={{
+            flex: 1
+          }}
           index={+this.props.navigation.state.params.index}
           onMomentumScrollEnd={(e, state, context) => {
             this.setState({index: state.index})
