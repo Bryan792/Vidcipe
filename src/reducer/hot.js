@@ -20,7 +20,6 @@ export default (state = initialState, action) => {
       return state.set('isRefreshing', true)
     case LOAD_HOT_SUCCESS:
       return state
-        .set('after', action.payload.after)
         .set('isRefreshing', false)
     case LOAD_HOT_APPEND_SUCCESS:
       //TODO limit the length based on array length
