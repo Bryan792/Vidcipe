@@ -1,4 +1,4 @@
-package com.reactnativetutorial;
+package com.vidcipe;
 
 import android.app.Application;
 

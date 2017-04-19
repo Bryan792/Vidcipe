@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import InfiniteScrollView from 'react-native-infinite-scroll-view'
 import { Toolbar } from 'react-native-material-ui'
 
+import { APP_NAME } from '../../config'
+
 import realm from '../../db-manager'
 
 import {
@@ -51,7 +53,7 @@ export default class HomePage extends React.PureComponent {
         flex: 1
       }}>
         <Toolbar
-          centerElement=""
+          centerElement={APP_NAME}
           searchable={{
             placeholder: 'Search',
             onChangeText: (text) => {

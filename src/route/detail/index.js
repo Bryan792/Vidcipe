@@ -5,6 +5,7 @@ import _ from 'lodash'
 import Swiper from 'react-native-swiper';
 import { Toolbar } from 'react-native-material-ui'
 
+import { APP_NAME } from '../../config'
 import realm from '../..//db-manager'
 import DetailPage from './detail-page' 
 
@@ -58,7 +59,7 @@ export default class DetailView extends React.Component {
         <Toolbar
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
-          centerElement=""
+          centerElement={APP_NAME}
         />
         {!this.state.renderPlaceholderOnly &&
         <Swiper 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Linking, Text, View, ListView, TouchableWithoutFeedback, ScrollView } from 'react-native'
+import { Linking, Text, View, ListView, TouchableWithoutFeedback, ScrollView, InteractionManager } from 'react-native'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import styled from 'styled-components/native'
