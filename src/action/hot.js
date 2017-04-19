@@ -56,12 +56,12 @@ export const loadHot = (force) => async (dispatch, getState) => {
 
                 realm.create('Post', {
                   ...{
-                    title,
-                      score,
-                      author,
-                      id,
-                      permalink,
-                      url
+                        title,
+                        score,
+                        author,
+                        id,
+                        permalink,
+                        url
                   },
                   created: new Date(created_utc),
                   backupThumbnailUrl: post.thumbnail,
@@ -77,7 +77,7 @@ export const loadHot = (force) => async (dispatch, getState) => {
 
           console.log('continue?', shouldContinue)
 
-          if (shouldContinue) 
+          if (shouldContinue)
             return getData(response.data.after)
           else
             return AsyncStorage.setItem('lastUpdated', '' + currentTime)
@@ -85,6 +85,6 @@ export const loadHot = (force) => async (dispatch, getState) => {
     })()
   } catch (error) {
     console.log(error)
-    //fail
+  //fail
   }
 }
