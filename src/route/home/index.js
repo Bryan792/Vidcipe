@@ -11,6 +11,7 @@ import {
   loadHot,
   loadMoreHot,
   search,
+  loadHotAppendSuccess,
 } from '../../action/hot'
 import Post from './post'
 
@@ -27,7 +28,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return { 
     loadHot: () => dispatch(loadHot()),
-    loadHotAppend: () => dispatch(loadHot(true)),
+    loadHotForce: () => dispatch(loadHot(true)),
+    loadHotAppend: () => dispatch(loadHotAppendSuccess()),
     search: (term) => dispatch(search(term)),
   }
 }
@@ -38,7 +40,8 @@ export default class HomePage extends React.PureComponent {
   timeout = undefined;
 
   componentDidMount() {
-    //this.props.loadHot()
+    console.log('mounted')
+    this.props.loadHot()
   }
 
   render() {
@@ -88,16 +91,12 @@ export default class HomePage extends React.PureComponent {
             )
           }}
           refreshing={this.props.isRefreshing}
-          onRefresh={this._onRefresh}
+          onRefresh={this.props.loadHotForce}
           onEndReached={this.props.loadHotAppend}
           keyExtractor={(item, index) => item.id}
         />
       </View>
     )
-  }
-
-  _onRefresh = () => {
-    this.props.loadHot()
   }
 
   _onLayout = event => {

@@ -23,10 +23,9 @@ export default (state = initialState, action) => {
         .set('after', action.payload.after)
         .set('isRefreshing', false)
     case LOAD_HOT_APPEND_SUCCESS:
+      //TODO limit the length based on array length
       return state
         .set('length', state.get('length') + 25)
-        .set('after', action.payload.after)
-        .set('isRefreshing', false)
     case SEARCH_SET:
       if (action.payload)
         return state
