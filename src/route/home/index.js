@@ -55,13 +55,15 @@ export default class HomePage extends React.PureComponent {
               clearTimeout(this.timeout)
               this.timeout = setTimeout(() => { 
                 this.props.search(text.trim())
-              }, 1000)
+              }, 700)
             },
             onSearchClosed: () => {
               clearTimeout(this.timeout)
               this.props.search()
             }
           }}
+          rightElement={this.state.compact ? 'view-headline' : 'view-stream'}
+          onRightElementPress={() => this.setState({compact: !this.state.compact})}
         />
 
         <VirtualizedList
@@ -70,7 +72,8 @@ export default class HomePage extends React.PureComponent {
           data={posts}
           renderItem={({item, index}) => {
             return (
-              <Post compact
+              <Post
+                compact={this.state.compact}
                 dimensions={this.state.dimensions}
                 backupThumbnailUrl={item.backupThumbnailUrl}
                 thumbnailUrl={item.thumbnailUrl}
