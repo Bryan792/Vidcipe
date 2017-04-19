@@ -17,6 +17,7 @@ const PostRow = styled.View`
 const Title = styled.Text`
   flex: 1;
   font-size: 16;
+  color: black;
 `
 
 const PostContainer = styled.View`

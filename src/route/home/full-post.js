@@ -8,8 +8,9 @@ import ThumbnailImage from '../../components/thumbnail-image'
 
 const Title = styled.Text`
   flex: 1;
-  font-size: 20;
+  font-size: 18;
   padding: 10 10;
+  color: black;
 `
 
 const PostContainer = styled.View`

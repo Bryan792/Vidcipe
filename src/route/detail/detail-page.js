@@ -7,6 +7,7 @@ import Video from 'react-native-video'
 import CachedImage from 'react-native-cached-image'
 import { Divider, Button } from 'react-native-material-ui'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment'
 
 import Swiper from 'react-native-swiper';
 
@@ -72,13 +73,34 @@ class FitVideo extends React.Component {
   }
 }
 
-const Title = styled.Text`
-  font-size: 20;
+const DescriptionContainer = styled.View`
   margin-bottom: 16;
 `
 
+const Row = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2 0;
+`
+
+
+const Title = styled.Text`
+  font-size: 18;
+  color: black;
+`
+
+const Author = styled.Text`
+  font-size: 14;
+  font-weight: bold;
+`
+
+const DateText = styled.Text`
+  font-size: 14;
+`
+
 const CommentsHeader = styled.Text`
-  font-size: 17;
+  font-size: 16;
+  padding: 5 0;
 `
 
 const CommentBox = styled.View`
@@ -156,10 +178,17 @@ export default class DetailPage extends React.PureComponent {
           </View>
           }
           <InfoBox>
-            <Title>{post.title}</Title>
+            <DescriptionContainer>
+              <Title>{post.title}</Title>
+              <Row>
+                <Author>{post.author} </Author>
+                <DateText>{prettyPrintDate(post.created)}</DateText>
+              </Row>
+            </DescriptionContainer>
             {post.comments && post.comments.length > 0 &&
             <View>
               <CommentsHeader>Comments</CommentsHeader>
+              <Divider />
               {post.comments.map(comment => (
               <View key={comment.body}>
                 <CommentBox>
@@ -182,4 +211,8 @@ export default class DetailPage extends React.PureComponent {
     )
   }
 
+}
+
+function prettyPrintDate(date) {
+  return moment(date).fromNow()
 }

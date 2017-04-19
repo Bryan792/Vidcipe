@@ -23,7 +23,7 @@ export const loadHot = (force) => async (dispatch, getState) => {
   try {
     const value = await AsyncStorage.getItem('lastUpdated');
     let currentTime = Date.now()
-    if (!force && value !== null && (currentTime - value) > 3.6e+6) {
+    if (!force || (value !== null && (currentTime - value) > 3.6e+6)) {
       return
     }
 
@@ -63,7 +63,7 @@ export const loadHot = (force) => async (dispatch, getState) => {
                         permalink,
                         url
                   },
-                  created: new Date(created_utc),
+                  created: new Date(created_utc*1000),
                   backupThumbnailUrl: post.thumbnail,
                   thumbnailUrl: thumbnail ? thumbnail.url : post.thumbnail,
                   thumbnailWidth: thumbnail ? thumbnail.width : -1,
