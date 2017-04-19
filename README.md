@@ -1,7 +1,7 @@
 # Vidcipe
 
-Video Recipes
-Powered by React Native
+Video Recipes  
+Powered by React Native  
 [Google Play](https://play.google.com/store/apps/details?id=com.vidcipe)
 
 ### Tech
