@@ -132,11 +132,39 @@ export default class DetailPage extends React.PureComponent {
   post = realm.objectForPrimaryKey('Post', this.props.postId)
 
   state = {
+    waiting: true
+  }
+
+  _setVideoTimer = () => {
+    this.timeout = setTimeout(()=> {
+      this.setState({waiting: false})
+    }, 1000)
   }
 
   componentDidMount() {
     this.props.loadDetail(this.post)
     this.props.loadComments(this.post)
+    if (this.props.shouldGetVideo) {
+      if (!this.props.timeout) {
+        this._setVideoTimer()
+      }
+    } else {
+      clearTimeout(this.timeout)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.shouldGetVideo) {
+      if (!this.timeout) {
+        this._setVideoTimer()
+      }
+    } else {
+      clearTimeout(this.timeout)
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout)
   }
 
   render() {
@@ -163,10 +191,10 @@ export default class DetailPage extends React.PureComponent {
             height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
             width: this.props.dimensions.width,
           }}>
-          {(!this.props.shouldGetVideo || !this.state.isLoaded) &&
+          {(this.state.waiting || !this.state.isLoaded) &&
             <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
           }
-          {videoUrl && this.props.shouldGetVideo &&
+          {videoUrl && !this.state.waiting &&
           <FitVideo 
             {...{videoUrl, videoWidth, videoHeight}}
             width={this.props.dimensions.width}

@@ -32,7 +32,7 @@ export default class FullPost extends React.PureComponent {
     let {score, title, backupThumbnailUrl, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact} = this.props
     let uri = this.state.imageFail ? backupThumbnailUrl : thumbnailUrl
 
-    return (
+    return this.props.dimensions ? (
       <PostContainer>
         <Card>
           {thumbnailHeight > 0 && this.props.dimensions &&
@@ -46,6 +46,6 @@ export default class FullPost extends React.PureComponent {
           <Title>{title}</Title>
         </Card>
       </PostContainer>
-    )
+    ) : null
   }
 }
