@@ -63,6 +63,7 @@ export default class DetailView extends React.Component {
         />
         {!this.state.renderPlaceholderOnly &&
         <Swiper 
+          showsPagination={false}
           loop={false} 
           style={{
             flex: 1
