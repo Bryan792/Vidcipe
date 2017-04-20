@@ -3,7 +3,6 @@ import { Linking, Text, View, ListView, TouchableWithoutFeedback, ScrollView, In
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import styled from 'styled-components/native'
-import Video from 'react-native-video'
 import CachedImage from 'react-native-cached-image'
 import { Divider, Button } from 'react-native-material-ui'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +13,7 @@ import Swiper from 'react-native-swiper';
 import realm from '../../db-manager'
 import Post from '../home/post'
 import ThumbnailImage from '../../components/thumbnail-image'
+import PausableVideo from './pauseable-video'
 
 import {
   loadDetail,
@@ -41,35 +41,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   return {...ownProps, ...dispatchProps,
     video: stateProps.videoUri(ownProps.postId),
     comments: stateProps.getComments(ownProps.postId),
-  }
-}
-
-class FitVideo extends React.Component {
-  state = {
-    paused: false,
-  }
-
-  render() {
-    const { videoUrl, videoHeight, videoWidth, onLoad } = this.props
-    return (
-      <TouchableWithoutFeedback
-        onPress={() => this.setState({paused: !this.state.paused})}
-      >
-        <Video
-          source={{ uri: videoUrl }}
-          rate={1.0}
-          volume={1.0}
-          muted={false}
-          paused={this.state.paused}
-          resizeMode="contain"
-          repeat
-          style={{
-            height: videoHeight / videoWidth * this.props.width,
-          }}
-          onLoad={onLoad}
-        />
-      </TouchableWithoutFeedback>
-    )
   }
 }
 
@@ -187,22 +158,24 @@ export default class DetailPage extends React.PureComponent {
           style={{flex: 1}}
         >
           {this.props.dimensions &&
-          <View style={{
-            height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
-            width: this.props.dimensions.width,
-          }}>
-          {(this.state.waiting || !this.state.isLoaded) &&
-            <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
-          }
-          {videoUrl && !this.state.waiting &&
-          <FitVideo 
-            {...{videoUrl, videoWidth, videoHeight}}
-            width={this.props.dimensions.width}
-            onLoad={() => {
-              this.setState({isLoaded: true})
+          <View 
+            style={{
+              height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
+              width: this.props.dimensions.width,
             }}
-          />
-          }
+          >
+            {(this.state.waiting || !this.state.isLoaded) &&
+            <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
+            }
+            {videoUrl && !this.state.waiting &&
+            <PausableVideo 
+              {...{videoUrl, videoWidth, videoHeight}}
+              width={this.props.dimensions.width}
+              onLoad={() => {
+                this.setState({isLoaded: true})
+              }}
+            />
+            }
           </View>
           }
           <InfoBox>
