@@ -97,6 +97,16 @@ const InfoBox = styled.View`
   padding: 16;
 `
 
+const Container = styled.View`
+  position: absolute;
+  top: 0;
+  bottom: 74;
+  left: 0;
+  right: 0;
+  align-items: stretch;
+  background-color: white;
+`
+
 @connect(mapStateToProps, mapDispatchToProps, mergeProps)
 export default class DetailPage extends React.PureComponent {
 
@@ -143,17 +153,7 @@ export default class DetailPage extends React.PureComponent {
     const { postId, videoInfo, comments } = this.props
     const { backupThumbnailUrl, thumbnailUrl, videoUrl, videoWidth, videoHeight } = post
     return ( 
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 74,
-          left: 0,
-          right: 0,
-          alignItems: 'stretch',
-          backgroundColor: 'white',
-        }}
-      >
+      <Container>
         <ScrollView
           style={{flex: 1}}
         >
@@ -208,7 +208,7 @@ export default class DetailPage extends React.PureComponent {
             />
           </InfoBox>
         </ScrollView>
-      </View>
+      </Container>
     )
   }
 
