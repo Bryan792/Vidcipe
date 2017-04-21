@@ -39,6 +39,8 @@ export default class DetailView extends React.Component {
     });
   }
 
+
+  //TODO onPageScrollStateChanged is android only, need ios fix
   render() {
     let posts = this.props.posts.slice(0, this.props.length)
     let pages = []
@@ -47,7 +49,7 @@ export default class DetailView extends React.Component {
           <DetailPage
             postId={posts[index].id}
             key={posts[index].id}
-            shouldGetVideo={this.state.index === index}
+            shouldGetVideo={this.state.index === index && this.state.scrollState !== 'dragging'}
             dimensions={this.state.dimensions}
           />
       ))
@@ -71,6 +73,9 @@ export default class DetailView extends React.Component {
           index={+this.props.navigation.state.params.index}
           onMomentumScrollEnd={(e, state, context) => {
             this.setState({index: state.index})
+          }}
+          onPageScrollStateChanged={(scrollState) => {
+            this.setState({scrollState})
           }}
           onLayout={this._onLayout}
         >
