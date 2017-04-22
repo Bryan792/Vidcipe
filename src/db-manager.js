@@ -19,8 +19,11 @@ const PostSchema = {
     videoUrl: {type: 'string', optional: true},
     videoWidth: {type: 'int', optional: true},
     videoHeight: {type: 'int', optional: true},
+
+    //v1
+    favorite: { type: 'bool', optional: true},
   }
-};
+}
 
 const CommentSchema = {
   name: 'Comment',
@@ -34,6 +37,12 @@ const realm = new Realm({schema:
   [
     PostSchema,
     CommentSchema,
-  ]})
+  ],
+  schemaVersion: 1,
+  //TODO FIXME
+  migration: (_oldRealm, newRealm) => {
+    newRealm.deleteAll();
+  },
+})
 
 export default realm
