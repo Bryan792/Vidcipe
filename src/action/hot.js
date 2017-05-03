@@ -31,7 +31,9 @@ export const loadHot = (force) => async (dispatch, getState) => {
       return
     }
 
-    dispatch(loadHotStart())(function getData(after) {
+    dispatch(loadHotStart());
+
+    (function getData(after) {
       return fetch(getUrl(after))
         .then(response => response.json())
         .then(response => {
@@ -76,9 +78,9 @@ export const loadHot = (force) => async (dispatch, getState) => {
           if (shouldContinue) {
             return getData(response.data.after)
           }
-          return AsyncStorage.setItem('lastUpdated', `${currentTime}`)
+          return AsyncStorage.setItem('lastUpdated', '' + currentTime) // eslint-disable-line
         })
-    })()
+    }())
   } catch (error) {
   // fail
   }
