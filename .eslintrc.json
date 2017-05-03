@@ -1,0 +1,16 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "no-underscore-dangle": "off",
+    "prefer-const": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "semi": [2, "never"],
+    "no-unexpected-multiline": 2,
+    "max-len": [0],
+    "react/jsx-indent": "off"
+  }
+}

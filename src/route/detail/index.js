@@ -1,13 +1,12 @@
 import React from 'react'
-import { InteractionManager, Text, View, ListView, TouchableWithoutFeedback, ScrollView, Image } from 'react-native'
-import { connect } from 'react-redux';
-import _ from 'lodash'
-import Swiper from 'react-native-swiper';
+import { InteractionManager, View } from 'react-native'
+import { connect } from 'react-redux'
+import Swiper from 'react-native-swiper'
 import { Toolbar } from 'react-native-material-ui'
 
 import { APP_NAME } from '../../config'
 import realm from '../..//db-manager'
-import DetailPage from './detail-page' 
+import DetailPage from './detail-page'
 
 import {
   loadDetail,
@@ -16,12 +15,12 @@ import {
 function mapStateToProps(state) {
   return {
     posts: state.hot.get('posts'),
-    length: state.hot.get('length')
+    length: state.hot.get('length'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     loadDetail: (id) => dispatch(loadDetail(id)),
   }
 }
@@ -35,12 +34,17 @@ export default class DetailView extends React.Component {
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this.setState({renderPlaceholderOnly: false});
-    });
+      this.setState({ renderPlaceholderOnly: false })
+    })
   }
 
+  _onLayout = event => {
+    if (this.state.dimensions) return // layout was already called
+    let { width, height } = event.nativeEvent.layout
+    this.setState({ dimensions: { width, height } })
+  }
 
-  //TODO onPageScrollStateChanged is android only, need ios fix
+  // TODO onPageScrollStateChanged is android only, need ios fix
   render() {
     let posts = this.props.posts.slice(0, this.props.length)
     let pages = []
@@ -62,28 +66,28 @@ export default class DetailView extends React.Component {
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
           centerElement={APP_NAME}
-          rightElement={posts[this.state.index].favorite ? "star" : "star-border"}
+          rightElement={posts[this.state.index].favorite ? 'star' : 'star-border'}
           onRightElementPress={() => {
             realm.write(() => {
               posts[this.state.index].favorite = !posts[this.state.index].favorite
             })
-            //force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
+            // force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
             this.forceUpdate()
           }}
         />
         {!this.state.renderPlaceholderOnly &&
-        <Swiper 
+        <Swiper
           showsPagination={false}
-          loop={false} 
+          loop={false}
           style={{
-            flex: 1
+            flex: 1,
           }}
           index={+this.props.navigation.state.params.index}
-          onMomentumScrollEnd={(e, state, context) => {
-            this.setState({index: state.index})
+          onMomentumScrollEnd={(e, state) => {
+            this.setState({ index: state.index })
           }}
           onPageScrollStateChanged={(scrollState) => {
-            this.setState({scrollState})
+            this.setState({ scrollState })
           }}
           onLayout={this._onLayout}
         >
@@ -92,11 +96,5 @@ export default class DetailView extends React.Component {
         }
       </View>
     )
-  }
-
-  _onLayout = event => {
-    if (this.state.dimensions) return // layout was already called
-    let {width, height} = event.nativeEvent.layout
-    this.setState({dimensions: {width, height}})
   }
 }

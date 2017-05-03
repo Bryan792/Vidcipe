@@ -15,25 +15,25 @@ const initialState = Immutable.fromJS({
 })
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case LOAD_HOT:
       return state.set('isRefreshing', true)
     case LOAD_HOT_SUCCESS:
       return state
         .set('isRefreshing', false)
     case LOAD_HOT_APPEND_SUCCESS:
-      //TODO limit the length based on array length
+      // TODO limit the length based on array length
       return state
         .set('length', state.get('length') + 25)
     case SEARCH_SET:
-      if (action.payload)
+      if (action.payload) {
         return state
           .set('posts', realm.objects('Post').filtered(`title CONTAINS[c] "${action.payload}"`).sorted('score', true))
           .set('length', initialState.get('length'))
-      else
-        return state
-          .set('posts', initialState.get('posts'))
-          .set('length', initialState.get('length'))
+      }
+      return state
+        .set('posts', initialState.get('posts'))
+        .set('length', initialState.get('length'))
     default:
       return state
   }

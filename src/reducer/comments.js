@@ -9,7 +9,7 @@ const initialState = Immutable.fromJS({
 })
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case LOAD_COMMENTS:
       return state
     case LOAD_COMMENTS_SUCCESS:

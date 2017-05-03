@@ -19,20 +19,19 @@ export const loadHotAppendSuccess = createAction(LOAD_HOT_APPEND_SUCCESS)
 export const search = createAction(SEARCH_SET)
 
 export const loadHot = (force) => async (dispatch, getState) => {
+  function getUrl(after) {
+    return `https://www.reddit.com/r/gifrecipes.json?limit=50&raw_json=1'${after ? `&after=${after}` : ''}`
+  }
+
   if (getState().hot.get('isRefreshing')) return
   try {
-    const value = await AsyncStorage.getItem('lastUpdated');
+    const value = await AsyncStorage.getItem('lastUpdated')
     let currentTime = Date.now()
     if (!force && value !== null && (currentTime - value) < 3.6e+6) {
       return
     }
 
-    dispatch(loadHotStart())
-
-    function getUrl(after) {
-      return 'https://www.reddit.com/r/gifrecipes.json?limit=50&raw_json=1' + (after ? `&after=${after}` : '')
-    }
-    (function getData(after) {
+    dispatch(loadHotStart())(function getData(after) {
       return fetch(getUrl(after))
         .then(response => response.json())
         .then(response => {
@@ -40,7 +39,6 @@ export const loadHot = (force) => async (dispatch, getState) => {
           realm.write(() => {
             let data = response.data.children.map(post => post.data)
             if (realm.objects('Post').length === 0) {
-              console.log('empty filling')
               data = [...oldJson.hits.hits.map(post => post._source), ...data]
             }
 
@@ -49,42 +47,39 @@ export const loadHot = (force) => async (dispatch, getState) => {
               .filter(post => /.*gfycat.com/.test(post.domain) || /.*imgur.com/.test(post.domain))
               .forEach(post => {
                 let thumbnail = _.get(post, 'preview.images[0].source')
-                let {title, score, author, id, permalink, created_utc, url} = post
+                let { title, score, author, id, permalink, created_utc, url } = post
                 if (shouldContinue && realm.objectForPrimaryKey('Post', id)) {
                   shouldContinue = false
                 }
 
                 realm.create('Post', {
                   ...{
-                        title,
-                        score,
-                        author,
-                        id,
-                        permalink,
-                        url
+                    title,
+                    score,
+                    author,
+                    id,
+                    permalink,
+                    url,
                   },
-                  created: new Date(created_utc*1000),
+                  created: new Date(created_utc * 1000), // eslint-disable-line camelcase
                   backupThumbnailUrl: post.thumbnail,
                   thumbnailUrl: thumbnail ? thumbnail.url : post.thumbnail,
                   thumbnailWidth: thumbnail ? thumbnail.width : -1,
                   thumbnailHeight: thumbnail ? thumbnail.height : -1,
                   comments: [],
-                }, true);
+                }, true)
               })
           })
 
           dispatch(loadHotSuccess())
 
-          console.log('continue?', shouldContinue)
-
-          if (shouldContinue)
+          if (shouldContinue) {
             return getData(response.data.after)
-          else
-            return AsyncStorage.setItem('lastUpdated', '' + currentTime)
+          }
+          return AsyncStorage.setItem('lastUpdated', `${currentTime}`)
         })
     })()
   } catch (error) {
-    console.log(error)
-  //fail
+  // fail
   }
 }

@@ -8,7 +8,7 @@ const initialState = Immutable.fromJS({
 })
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case LOAD_DETAIL_SUCCESS:
       return state.set(action.payload, Date.now())
     default:

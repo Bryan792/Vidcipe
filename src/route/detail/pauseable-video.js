@@ -13,7 +13,7 @@ export default class FitVideo extends React.PureComponent {
     const { videoUrl, videoHeight, videoWidth, onLoad, width } = this.props
     return (
       <TouchableWithoutFeedback
-        onPress={() => this.setState({paused: !this.state.paused})}
+        onPress={() => this.setState({ paused: !this.state.paused })}
       >
         <Video
           source={{ uri: videoUrl }}

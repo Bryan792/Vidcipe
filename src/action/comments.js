@@ -9,10 +9,10 @@ export const loadCommentsStart = createAction(LOAD_COMMENTS)
 export const loadCommentsSuccess = createAction(LOAD_COMMENTS_SUCCESS)
 
 export const loadComments = (post) => (dispatch, getState) => {
-  let id = post.id
+  const id = post.id
   if (getState().comments.includes(id)) return
   dispatch(loadCommentsStart({
-    id
+    id,
   }))
   fetch(`https://reddit.com${post.permalink}.json?sort=confidence&limit=10&depth=1&raw_json=1`)
     .then(response => response.json())
@@ -26,7 +26,8 @@ export const loadComments = (post) => (dispatch, getState) => {
     ))
     .then(comments => {
       realm.write(() => {
-        post.comments = comments
+        const realmPost = post
+        realmPost.comments = comments
       })
       dispatch(loadCommentsSuccess(id))
     })

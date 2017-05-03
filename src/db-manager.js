@@ -15,14 +15,14 @@ const PostSchema = {
     thumbnailHeight: 'int',
     backupThumbnailUrl: 'string',
     url: 'string',
-    comments: {type: 'list', objectType: 'Comment'},
-    videoUrl: {type: 'string', optional: true},
-    videoWidth: {type: 'int', optional: true},
-    videoHeight: {type: 'int', optional: true},
+    comments: { type: 'list', objectType: 'Comment' },
+    videoUrl: { type: 'string', optional: true },
+    videoWidth: { type: 'int', optional: true },
+    videoHeight: { type: 'int', optional: true },
 
-    //v1
-    favorite: { type: 'bool', optional: true},
-  }
+    // v1
+    favorite: { type: 'bool', optional: true },
+  },
 }
 
 const CommentSchema = {
@@ -30,18 +30,18 @@ const CommentSchema = {
   properties: {
     body: 'string',
     author: 'string',
-  }
+  },
 }
 
-const realm = new Realm({schema: 
-  [
-    PostSchema,
-    CommentSchema,
-  ],
+const realm = new Realm({ schema:
+[
+  PostSchema,
+  CommentSchema,
+],
   schemaVersion: 1,
-  //TODO FIXME
+  // TODO FIXME
   migration: (_oldRealm, newRealm) => {
-    newRealm.deleteAll();
+    newRealm.deleteAll()
   },
 })
 

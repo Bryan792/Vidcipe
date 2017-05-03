@@ -5,7 +5,7 @@ export default class ThumbnailImage extends React.PureComponent {
   state = {}
 
   render() {
-    let {backupThumbnailUrl, thumbnailUrl} = this.props
+    let { backupThumbnailUrl, thumbnailUrl } = this.props
     return (
       <CachedImage
         style={{
@@ -13,8 +13,8 @@ export default class ThumbnailImage extends React.PureComponent {
           width: undefined,
           height: undefined,
         }}
-        source={{ uri: this.state.imageFail ? backupThumbnailUrl : thumbnailUrl}}
-        onError={() => this.setState({imageFail: true})}
+        source={{ uri: this.state.imageFail ? backupThumbnailUrl : thumbnailUrl }}
+        onError={() => this.setState({ imageFail: true })}
       />
     )
   }

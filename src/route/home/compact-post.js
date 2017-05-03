@@ -1,8 +1,7 @@
 import React from 'react'
-import { Linking, View, Text, Image, TouchableHighlight } from 'react-native'
+import { View } from 'react-native'
 import styled from 'styled-components/native'
-import FitImage from 'react-native-fit-image'
-import { Card, Divider } from 'react-native-material-ui'
+import { Divider } from 'react-native-material-ui'
 
 import ThumbnailImage from '../../components/thumbnail-image'
 
@@ -24,7 +23,7 @@ const PostContainer = styled.View`
   flex: 1;
 `
 
-export default ({score, title, backupThumbnailUrl, thumbnailUrl, thumbnailHeight, thumbnailWidth, compact}) => (
+export default ({ title, backupThumbnailUrl, thumbnailUrl }) => (
   <PostContainer>
     <PostRow>
       <View
@@ -35,7 +34,7 @@ export default ({score, title, backupThumbnailUrl, thumbnailUrl, thumbnailHeight
           marginRight: 16,
         }}
       >
-        <ThumbnailImage {...{backupThumbnailUrl, thumbnailUrl}} />
+        <ThumbnailImage {...{ backupThumbnailUrl, thumbnailUrl }} />
       </View>
       <Title>{title}</Title>
     </PostRow>
