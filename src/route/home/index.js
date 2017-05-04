@@ -9,6 +9,8 @@ import {
   loadHot,
   search,
   loadHotAppendSuccess,
+  setFavorite,
+  unsetFavorite,
 } from '../../action/hot'
 import Post from './post'
 
@@ -19,6 +21,7 @@ function mapStateToProps(state) {
     posts: state.hot.get('posts'),
     length: state.hot.get('length'),
     isRefreshing: state.hot.get('isRefreshing'),
+    filterFavorite: state.hot.get('filterFavorite'),
   }
 }
 
@@ -28,6 +31,7 @@ function mapDispatchToProps(dispatch) {
     loadHotForce: () => dispatch(loadHot(true)),
     loadHotAppend: () => dispatch(loadHotAppendSuccess()),
     search: (term) => dispatch(search(term)),
+    setFilterFavorite: (shouldSet) => (shouldSet ? dispatch(setFavorite()) : dispatch(unsetFavorite())),
   }
 }
 
@@ -63,8 +67,14 @@ export default class HomePage extends React.PureComponent {
               this.props.search()
             },
           }}
-          rightElement={this.state.compact ? 'view-headline' : 'view-stream'}
-          onRightElementPress={() => this.setState({ compact: !this.state.compact })}
+          rightElement={[this.props.filterFavorite ? 'star' : 'star-border', this.state.compact ? 'view-headline' : 'view-stream']}
+          onRightElementPress={({ action }) => {
+            if (action.startsWith('star')) {
+              this.props.setFilterFavorite(!this.props.filterFavorite)
+            } else {
+              this.setState({ compact: !this.state.compact })
+            }
+          }}
         />
 
         <VirtualizedList
