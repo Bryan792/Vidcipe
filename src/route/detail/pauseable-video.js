@@ -18,8 +18,7 @@ export default class FitVideo extends React.PureComponent {
         <Video
           source={{ uri: videoUrl }}
           rate={1.0}
-          volume={1.0}
-          muted={false}
+          muted
           paused={this.state.paused}
           resizeMode="contain"
           repeat
