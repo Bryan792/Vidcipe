@@ -92,7 +92,7 @@ export default class HomePage extends React.PureComponent {
                 score={item.score}
                 title={item.title}
                 onPostSelected={() => {
-                  this.props.navigation.navigate('Detail', { index })
+                  this.props.navigation.navigate('Detail', { id: item.id })
                 }}
               />
           )}
