@@ -1982,7 +1982,7 @@ event-target-shim@^1.0.5:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-1.1.1.tgz#a86e5ee6bdaa16054475da797ccddf0c55698491"
 
-events@^1.0.2, events@^1.1.1:
+events@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
 
@@ -2170,6 +2170,10 @@ flat-cache@^1.2.1:
     del "^2.0.2"
     graceful-fs "^4.1.2"
     write "^0.2.1"
+
+flow-bin@0.40.0:
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.40.0.tgz#e10d60846d923124e47f548f16ba60fd8baff5a5"
 
 for-in@^1.0.1:
   version "1.0.2"
@@ -2605,10 +2609,6 @@ invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.1:
 invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
-
-ip-regex@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-1.0.3.tgz#dc589076f659f419c222039a33316f1c7387effd"
 
 is-arrayish@^0.2.1:
   version "0.2.1"
@@ -4009,7 +4009,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.0.0, prop-types@^15.5.4:
+prop-types@^15.0.0, prop-types@^15.5.4, prop-types@^15.5.8:
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
   dependencies:
@@ -4150,15 +4150,15 @@ react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
 
-react-native-drawer-layout-polyfill@^1.0.4:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-drawer-layout-polyfill/-/react-native-drawer-layout-polyfill-1.3.0.tgz#50ea3f1dceed360b06f24a33b5ef3701d5c1417a"
+react-native-drawer-layout-polyfill@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-drawer-layout-polyfill/-/react-native-drawer-layout-polyfill-1.2.0.tgz#0d77bd3af8964ffe7fd0f1f6550d6be328a5b567"
   dependencies:
-    react-native-drawer-layout "1.3.0"
+    react-native-drawer-layout "1.2.0"
 
-react-native-drawer-layout@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-1.3.0.tgz#3f9942c4c57e18bfe947a1a9b624365c91914280"
+react-native-drawer-layout@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-1.2.0.tgz#ae274ee17fadce58d9d7ecef4797d9fad672af74"
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
@@ -4226,29 +4226,11 @@ react-native-swiper@^1.5.4:
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.5.4.tgz#a85535b5374ef8d605a7a720e447ac46816ac448"
 
-react-native-tab-view@^0.0.57:
-  version "0.0.57"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.57.tgz#715e2ea4100fa50168e134df3947dd76ebd55743"
-
-react-native-tcp@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-tcp/-/react-native-tcp-2.0.4.tgz#9be80447b94040f4a55e86c7d8ec49d2b5e8ebe8"
+react-native-tab-view@^0.0.61:
+  version "0.0.61"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.61.tgz#9f5446c9ad33158b87f0bccf5004fbff79ca1f92"
   dependencies:
-    base64-js "0.0.8"
-    events "^1.0.2"
-    inherits "^2.0.1"
-    ip-regex "^1.0.3"
-    util "^0.10.3"
-
-react-native-udp@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/react-native-udp/-/react-native-udp-1.2.9.tgz#3f71446efa5a9dc3e4d60400fc19e527825d7994"
-  dependencies:
-    base64-js "0.0.8"
-    events "^1.0.2"
-    inherits "^2.0.1"
-    ip-regex "^1.0.3"
-    util "^0.10.3"
+    prop-types "^15.5.8"
 
 react-native-vector-icons@3.0.0:
   version "3.0.0"
@@ -4359,16 +4341,17 @@ react-native@^0.43.3:
     xpipe "^1.0.5"
     yargs "^6.4.0"
 
-"react-navigation@git+https://github.com/react-community/react-navigation.git#7edd9a7":
-  version "1.0.0-beta.7"
-  resolved "git+https://github.com/react-community/react-navigation.git#7edd9a7"
+react-navigation@v1.0.0-beta.9:
+  version "1.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.0.0-beta.9.tgz#9fb1f8e4d15cee70cc8b5d58719a986ca443664d"
   dependencies:
     clamp "^1.0.1"
     fbjs "^0.8.5"
     hoist-non-react-statics "^1.2.0"
     path-to-regexp "^1.7.0"
-    react-native-drawer-layout-polyfill "^1.0.4"
-    react-native-tab-view "^0.0.57"
+    prop-types "^15.5.8"
+    react-native-drawer-layout-polyfill "1.2.0"
+    react-native-tab-view "^0.0.61"
 
 react-proxy@^1.1.7:
   version "1.1.8"
