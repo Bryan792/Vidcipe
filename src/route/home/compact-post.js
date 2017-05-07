@@ -23,7 +23,13 @@ const PostContainer = styled.View`
   flex: 1;
 `
 
-export default ({ title, backupThumbnailUrl, thumbnailUrl }) => (
+type Props = {
+  title: string,
+  backupThumbnailUrl: string,
+  thumbnailUrl: string,
+}
+
+export default ({ title, backupThumbnailUrl, thumbnailUrl }: Props) => (
   <PostContainer>
     <PostRow>
       <View

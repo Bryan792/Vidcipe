@@ -27,6 +27,7 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DetailView extends React.Component {
+
   state={
     index: +this.props.navigation.state.params.index,
     renderPlaceholderOnly: true,
@@ -36,6 +37,19 @@ export default class DetailView extends React.Component {
     InteractionManager.runAfterInteractions(() => {
       this.setState({ renderPlaceholderOnly: false })
     })
+  }
+
+  props: {
+    navigation: {
+      state: {
+        params: {
+          index: string,
+        }
+      },
+      goBack: Function,
+    },
+    posts: [],
+    length: number,
   }
 
   _onLayout = event => {
@@ -59,9 +73,11 @@ export default class DetailView extends React.Component {
       ))
     }
     return (
-      <View style={{
-        flex: 1,
-      }}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
         <Toolbar
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
