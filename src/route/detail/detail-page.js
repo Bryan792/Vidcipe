@@ -20,20 +20,21 @@ import {
 
 function mapStateToProps(state) {
   return {
-    videoUri: (id) => state.detail.get(id),
-    getComments: (id) => state.comments.get(id),
+    videoUri: id => state.detail.get(id),
+    getComments: id => state.comments.get(id),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadDetail: (post) => dispatch(loadDetail(post)),
-    loadComments: (post) => dispatch(loadComments(post)),
+    loadDetail: post => dispatch(loadDetail(post)),
+    loadComments: post => dispatch(loadComments(post)),
   }
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  return { ...ownProps, ...dispatchProps,
+  return { ...ownProps,
+    ...dispatchProps,
     video: stateProps.videoUri(ownProps.postId),
     comments: stateProps.getComments(ownProps.postId),
   }
@@ -99,23 +100,15 @@ const Container = styled.View`
 @connect(mapStateToProps, mapDispatchToProps, mergeProps)
 export default class DetailPage extends React.PureComponent {
 
-  post = realm.objectForPrimaryKey('Post', this.props.postId)
-
   state = {
     waiting: true,
-  }
-
-  _setVideoTimer = () => {
-    this.timeout = setTimeout(() => {
-      this.setState({ waiting: false })
-    }, 1000)
   }
 
   componentDidMount() {
     this.props.loadDetail(this.post)
     this.props.loadComments(this.post)
     if (this.props.shouldGetVideo) {
-      if (!this.props.timeout) {
+      if (!this.timeout) {
         this._setVideoTimer()
       }
     } else {
@@ -137,6 +130,23 @@ export default class DetailPage extends React.PureComponent {
     clearTimeout(this.timeout)
   }
 
+  props: {
+    postId: number,
+    loadDetail: Function,
+    loadComments: Function,
+    shouldGetVideo: bool,
+    dimensions?: {
+      width: number,
+    },
+  }
+
+  post = realm.objectForPrimaryKey('Post', this.props.postId)
+  _setVideoTimer = () => {
+    this.timeout = setTimeout(() => {
+      this.setState({ waiting: false })
+    }, 1000)
+  }
+
   render() {
     function prettyPrintDate(date) {
       return moment(date).fromNow()
@@ -151,7 +161,7 @@ export default class DetailPage extends React.PureComponent {
           {this.props.dimensions &&
           <View
             style={{
-              height: post.thumbnailHeight / post.thumbnailWidth * this.props.dimensions.width,
+              height: (post.thumbnailHeight / post.thumbnailWidth) * this.props.dimensions.width,
               width: this.props.dimensions.width,
             }}
           >

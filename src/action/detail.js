@@ -1,12 +1,13 @@
 import { createAction } from 'redux-actions'
-import realm from '../db-manager'
 import URL from 'url-parse'
+
+import realm from '../db-manager'
 
 export const LOAD_DETAIL_SUCCESS = 'LOAD_DETAIL_SUCCESS'
 
 export const loadDetailSuccess = createAction(LOAD_DETAIL_SUCCESS)
 
-export const loadDetail = (post) => (dispatch) => {
+export const loadDetail = post => (dispatch) => {
   function saveVideo(videoUrl, videoWidth, videoHeight) {
     realm.write(() => {
       post.videoUrl = videoUrl
@@ -22,7 +23,7 @@ export const loadDetail = (post) => (dispatch) => {
     case /.*gfycat.com/.test(url.hostname):
       fetch(`https://gfycat.com/cajax/get${url.pathname}`)
         .then(response => response.json())
-        .then(response => {
+        .then((response) => {
           saveVideo(response.gfyItem.webmUrl, +response.gfyItem.width, +response.gfyItem.height)
           dispatch(loadDetailSuccess(id))
         })
@@ -34,7 +35,7 @@ export const loadDetail = (post) => (dispatch) => {
         }),
       })
         .then(response => response.json())
-        .then(response => {
+        .then((response) => {
           saveVideo(response.data.mp4, +response.data.width, +response.data.height)
           dispatch(loadDetailSuccess(id))
         })

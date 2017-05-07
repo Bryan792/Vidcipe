@@ -8,7 +8,7 @@ export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
 export const loadCommentsStart = createAction(LOAD_COMMENTS)
 export const loadCommentsSuccess = createAction(LOAD_COMMENTS_SUCCESS)
 
-export const loadComments = (post) => (dispatch, getState) => {
+export const loadComments = post => (dispatch, getState) => {
   const id = post.id
   if (getState().comments.includes(id)) return
   dispatch(loadCommentsStart({
@@ -22,9 +22,9 @@ export const loadComments = (post) => (dispatch, getState) => {
       .map(comment => ({
         body: comment.data.body,
         author: comment.data.author,
-      })
+      }),
     ))
-    .then(comments => {
+    .then((comments) => {
       realm.write(() => {
         const realmPost = post
         realmPost.comments = comments

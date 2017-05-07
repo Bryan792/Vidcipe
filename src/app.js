@@ -15,5 +15,5 @@ export default StackNavigator( // eslint-disable-line new-cap
   },
   {
     headerMode: 'none',
-  }
+  },
 )

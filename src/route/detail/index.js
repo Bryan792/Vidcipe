@@ -21,7 +21,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadDetail: (id) => dispatch(loadDetail(id)),
+    loadDetail: id => dispatch(loadDetail(id)),
   }
 }
 
@@ -52,7 +52,7 @@ export default class DetailView extends React.Component {
     length: number,
   }
 
-  _onLayout = event => {
+  _onLayout = (event) => {
     if (this.state.dimensions) return // layout was already called
     let { width, height } = event.nativeEvent.layout
     this.setState({ dimensions: { width, height } })
@@ -62,7 +62,7 @@ export default class DetailView extends React.Component {
   render() {
     let posts = this.props.posts.slice(0, this.props.length)
     let pages = []
-    for (let index = 0; index < posts.length; index++) {
+    for (let index = 0; index < posts.length; index += 1) {
       pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= (this.state.placeholder ? 0 : 2) && (
           <DetailPage
             postId={posts[index].id}

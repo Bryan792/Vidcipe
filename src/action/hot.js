@@ -22,7 +22,7 @@ export const search = createAction(SEARCH_SET)
 export const setFavorite = createAction(SET_FAVORITE)
 export const unsetFavorite = createAction(UNSET_FAVORITE)
 
-export const loadHot = (force) => async (dispatch, getState) => {
+export const loadHot = force => async (dispatch, getState) => {
   function getUrl(after) {
     return `https://www.reddit.com/r/gifrecipes.json?limit=50&raw_json=1'${after ? `&after=${after}` : ''}`
   }
@@ -40,7 +40,7 @@ export const loadHot = (force) => async (dispatch, getState) => {
     (function getData(after) {
       return fetch(getUrl(after))
         .then(response => response.json())
-        .then(response => {
+        .then((response) => {
           let shouldContinue = true
           realm.write(() => {
             let data = response.data.children.map(post => post.data)
@@ -51,7 +51,7 @@ export const loadHot = (force) => async (dispatch, getState) => {
             data
               .filter(post => !post.is_self)
               .filter(post => /.*gfycat.com/.test(post.domain) || /.*imgur.com/.test(post.domain))
-              .forEach(post => {
+              .forEach((post) => {
                 let thumbnail = _.get(post, 'preview.images[0].source')
                 let { title, score, author, id, permalink, created_utc, url } = post
                 if (shouldContinue && realm.objectForPrimaryKey('Post', id)) {

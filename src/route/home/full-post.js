@@ -19,6 +19,17 @@ const PostContainer = styled.View`
 export default class FullPost extends React.PureComponent {
   state = {}
 
+  props: {
+    title: string,
+    backupThumbnailUrl: string,
+    thumbnailUrl: string,
+    thumbnailHeight: number,
+    thumbnailWidth: number,
+    dimensions?: {
+      width: number,
+    },
+  }
+
   render() {
     let { title, backupThumbnailUrl, thumbnailUrl, thumbnailHeight, thumbnailWidth } = this.props
 
@@ -28,7 +39,7 @@ export default class FullPost extends React.PureComponent {
           {thumbnailHeight > 0 && this.props.dimensions &&
           <View
             style={{
-              height: thumbnailHeight / thumbnailWidth * this.props.dimensions.width,
+              height: (thumbnailHeight / thumbnailWidth) * this.props.dimensions.width,
               width: this.props.dimensions.width,
             }}
           >

@@ -4,6 +4,11 @@ import CachedImage from 'react-native-cached-image'
 export default class ThumbnailImage extends React.PureComponent {
   state = {}
 
+  props: {
+    backupThumbnailUrl: string,
+    thumbnailUrl: string,
+  }
+
   render() {
     let { backupThumbnailUrl, thumbnailUrl } = this.props
     return (

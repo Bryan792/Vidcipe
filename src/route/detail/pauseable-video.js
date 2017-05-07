@@ -9,6 +9,14 @@ export default class FitVideo extends React.PureComponent {
     paused: false,
   }
 
+  props: {
+    videoUrl: string,
+    videoHeight: number,
+    videoWidth: number,
+    onLoad: Function,
+    width: number,
+  }
+
   render() {
     const { videoUrl, videoHeight, videoWidth, onLoad, width } = this.props
     return (
@@ -23,7 +31,7 @@ export default class FitVideo extends React.PureComponent {
           resizeMode="contain"
           repeat
           style={{
-            height: videoHeight / videoWidth * width,
+            height: (videoHeight / videoWidth) * width,
           }}
           onLoad={onLoad}
         />

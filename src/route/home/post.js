@@ -7,7 +7,13 @@ import {
 import CompactPost from './compact-post'
 import FullPost from './full-post'
 
+//eslint-disable-next-line
 export default class Post extends React.PureComponent {
+  props: {
+    onPostSelected: Function,
+    compact: boolean,
+  }
+
   render() {
     return (
       <TouchableHighlight

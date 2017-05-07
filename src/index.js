@@ -33,7 +33,7 @@ if (!__DEV__) { // eslint-disable-line no-undef
     'timeStamp',
     'trace',
     'warn',
-  ].forEach(methodName => {
+  ].forEach((methodName) => {
     console[methodName] = () => { // eslint-disable-line no-console
       /* noop */
     }
@@ -57,7 +57,7 @@ const store = createStore(combineReducers({
   comments: commentsReducer,
 }), applyMiddleware(thunk))
 
-const wrapApp = (AppComponent) => () =>
+const wrapApp = AppComponent => () =>
   <Provider store={store}>
     <ThemeProvider uiTheme={uiTheme}>
       <AppComponent />

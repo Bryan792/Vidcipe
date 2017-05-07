@@ -30,18 +30,39 @@ function mapDispatchToProps(dispatch) {
     loadHot: () => dispatch(loadHot()),
     loadHotForce: () => dispatch(loadHot(true)),
     loadHotAppend: () => dispatch(loadHotAppendSuccess()),
-    search: (term) => dispatch(search(term)),
-    setFilterFavorite: (shouldSet) => (shouldSet ? dispatch(setFavorite()) : dispatch(unsetFavorite())),
+    search: term => dispatch(search(term)),
+    setFilterFavorite: shouldSet => (shouldSet ? dispatch(setFavorite()) : dispatch(unsetFavorite())),
   }
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class HomePage extends React.PureComponent {
   state = {}
-  timeout = undefined;
 
   componentDidMount() {
     this.props.loadHot()
+  }
+
+  props: {
+    posts: [],
+    loadHot: Function,
+    length: number,
+    search: Function,
+    filterFavorite: boolean,
+    setFilterFavorite: Function,
+    navigation: {
+      navigate: Function,
+    },
+    isRefreshing: boolean,
+    loadHotForce: Function,
+    loadHotAppend: Function,
+  }
+
+  timeout = undefined;
+  _onLayout = (event) => {
+    if (this.state.dimensions) return // layout was already called
+    let { width, height } = event.nativeEvent.layout
+    this.setState({ dimensions: { width, height } })
   }
 
   render() {
@@ -99,15 +120,9 @@ export default class HomePage extends React.PureComponent {
           refreshing={this.props.isRefreshing}
           onRefresh={this.props.loadHotForce}
           onEndReached={this.props.loadHotAppend}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
         />
       </View>
     )
-  }
-
-  _onLayout = event => {
-    if (this.state.dimensions) return // layout was already called
-    let { width, height } = event.nativeEvent.layout
-    this.setState({ dimensions: { width, height } })
   }
 }
