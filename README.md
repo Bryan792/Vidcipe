@@ -2,7 +2,7 @@
 
 Video Recipes  
 Powered by React Native  
-[Google Play](https://play.google.com/store/apps/details?id=com.vidcipe)
+<a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.vidcipe'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
 
 ### Tech
 
