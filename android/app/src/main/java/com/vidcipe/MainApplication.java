@@ -7,8 +7,6 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import io.realm.react.RealmReactPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.bitgo.randombytes.RandomBytesPackage;
-import com.peel.react.rnos.RNOSModule;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -32,9 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFetchBlobPackage(),
             new VectorIconsPackage(),
             new RealmReactPackage(),
-            new ReactVideoPackage(),
-            new RandomBytesPackage(),
-            new RNOSModule()
+            new ReactVideoPackage()
       );
     }
   };
