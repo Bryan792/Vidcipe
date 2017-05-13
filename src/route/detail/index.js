@@ -81,7 +81,7 @@ export default class DetailView extends React.Component {
         <Toolbar
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
-          centerElement={APP_NAME}
+          centerElement={posts[this.state.index].title}
           rightElement={posts[this.state.index].favorite ? 'star' : 'star-border'}
           onRightElementPress={() => {
             realm.write(() => {
