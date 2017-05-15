@@ -22,6 +22,7 @@ function mapStateToProps(state) {
     length: state.hot.get('length'),
     isRefreshing: state.hot.get('isRefreshing'),
     filterFavorite: state.hot.get('filterFavorite'),
+    reload: state.hot.get('reload'),
   }
 }
 

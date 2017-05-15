@@ -14,6 +14,8 @@ export const SEARCH_SET = 'SEARCH_SET'
 export const SET_FAVORITE = 'SET_FAVORITE'
 export const UNSET_FAVORITE = 'UNSET_FAVORITE'
 
+export const RELOAD_HOT = 'RELOAD_HOT'
+
 export const loadHotStart = createAction(LOAD_HOT)
 export const loadHotSuccess = createAction(LOAD_HOT_SUCCESS)
 export const loadHotAppendSuccess = createAction(LOAD_HOT_APPEND_SUCCESS)
@@ -21,6 +23,8 @@ export const loadHotAppendSuccess = createAction(LOAD_HOT_APPEND_SUCCESS)
 export const search = createAction(SEARCH_SET)
 export const setFavorite = createAction(SET_FAVORITE)
 export const unsetFavorite = createAction(UNSET_FAVORITE)
+
+export const reloadHot = createAction(RELOAD_HOT)
 
 export const loadHot = force => async (dispatch, getState) => {
   function getUrl(after) {
@@ -88,4 +92,11 @@ export const loadHot = force => async (dispatch, getState) => {
   } catch (error) {
   // fail
   }
+}
+
+export const hidePost = post => (dispatch) => {
+  realm.write(() => {
+    post.isHidden = true
+  })
+  dispatch(reloadHot())
 }

@@ -22,6 +22,9 @@ const PostSchema = {
 
     // v1
     favorite: { type: 'bool', optional: true },
+
+    // v2
+    isHidden: { type: 'bool', default: false },
   },
 }
 
@@ -38,7 +41,7 @@ const realm = new Realm({ schema:
   PostSchema,
   CommentSchema,
 ],
-  schemaVersion: 1,
+  schemaVersion: 4,
   // TODO FIXME
   migration: (_oldRealm, newRealm) => {
     newRealm.deleteAll()

@@ -4,9 +4,12 @@ import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'
 import { Toolbar } from 'react-native-material-ui'
 
-import { APP_NAME } from '../../config'
 import realm from '../..//db-manager'
 import DetailPage from './detail-page'
+
+import {
+  hidePost,
+} from '../../action/hot'
 
 import {
   loadDetail,
@@ -16,12 +19,14 @@ function mapStateToProps(state) {
   return {
     posts: state.hot.get('posts'),
     length: state.hot.get('length'),
+    reload: state.hot.get('reload'),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loadDetail: id => dispatch(loadDetail(id)),
+    hidePost: post => dispatch(hidePost(post)),
   }
 }
 
@@ -50,6 +55,7 @@ export default class DetailView extends React.Component {
     },
     posts: [],
     length: number,
+    hidePost: Function,
   }
 
   _onLayout = (event) => {
@@ -82,13 +88,16 @@ export default class DetailView extends React.Component {
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
           centerElement={posts[this.state.index].title}
-          rightElement={posts[this.state.index].favorite ? 'star' : 'star-border'}
-          onRightElementPress={() => {
-            realm.write(() => {
-              posts[this.state.index].favorite = !posts[this.state.index].favorite
-            })
-            // force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
-            this.forceUpdate()
+          rightElement={['delete', posts[this.state.index].favorite ? 'star' : 'star-border']}
+          onRightElementPress={({ action }) => {
+            if (action === 'delete') {
+              this.props.hidePost(posts[this.state.index])
+            } else {
+              realm.write(() => {
+                posts[this.state.index].favorite = !posts[this.state.index].favorite
+              })
+              // force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
+            }
           }}
         />
         {!this.state.renderPlaceholderOnly &&
