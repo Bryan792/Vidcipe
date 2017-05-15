@@ -35,7 +35,7 @@ export const loadHot = force => async (dispatch, getState) => {
   try {
     const value = await AsyncStorage.getItem('lastUpdated')
     let currentTime = Date.now()
-    if (!force && value !== null && (currentTime - value) < 3.6e+6) {
+    if (!force && value !== null && (currentTime - value) < 3.6e+6 && realm.objects('Post').length > 0) {
       return
     }
 
