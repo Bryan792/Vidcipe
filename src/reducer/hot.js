@@ -9,14 +9,16 @@ import {
   SET_FAVORITE,
   UNSET_FAVORITE,
   RELOAD_HOT,
+  SET_POST_DISPLAY,
 } from '../action/hot'
 
 const initialState = Immutable.fromJS({
-  posts: realm.objects('Post').sorted('created', true).filtered('isHidden == false'),
+  posts: realm.objects('Post').filtered('isHidden == false').sorted('created', true),
   isRefreshing: false,
   filterFavorite: false,
   searchQuery: '',
   length: 25,
+  compact: false,
 })
 
 export default (state = initialState, action) => {
@@ -31,7 +33,7 @@ export default (state = initialState, action) => {
     if (searchQuery) {
       posts = posts.filtered(`title CONTAINS[c] "${searchQuery}"`)
     }
-    return posts.sorted('score', true).filtered('isHidden == false')
+    return posts.filtered('isHidden == false').sorted('score', true)
   }
 
   switch (action.type) {
@@ -62,6 +64,8 @@ export default (state = initialState, action) => {
     case RELOAD_HOT:
       // TODO force anyone using this to reload, is this the best way?
       return state.set('reload', Date.now())
+    case SET_POST_DISPLAY:
+      return state.set('compact', action.payload)
     default:
       return state
   }

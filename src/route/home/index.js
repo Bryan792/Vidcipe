@@ -23,6 +23,7 @@ function mapStateToProps(state) {
     isRefreshing: state.hot.get('isRefreshing'),
     filterFavorite: state.hot.get('filterFavorite'),
     reload: state.hot.get('reload'),
+    compact: state.hot.get('compact'),
   }
 }
 
@@ -57,6 +58,7 @@ export default class HomePage extends React.PureComponent {
     isRefreshing: boolean,
     loadHotForce: Function,
     loadHotAppend: Function,
+    compact: boolean,
   }
 
   timeout = undefined;
@@ -89,12 +91,12 @@ export default class HomePage extends React.PureComponent {
               this.props.search()
             },
           }}
-          rightElement={[this.props.filterFavorite ? 'star' : 'star-border', this.state.compact ? 'view-headline' : 'view-stream']}
+          rightElement={[this.props.filterFavorite ? 'star' : 'star-border', 'more-vert']}
           onRightElementPress={({ action }) => {
             if (action.startsWith('star')) {
               this.props.setFilterFavorite(!this.props.filterFavorite)
-            } else {
-              this.setState({ compact: !this.state.compact })
+            } else if (action === 'more-vert') {
+              this.props.navigation.navigate('Settings')
             }
           }}
         />
@@ -105,7 +107,7 @@ export default class HomePage extends React.PureComponent {
           data={posts}
           renderItem={({ item, index }) => (
               <Post
-                compact={this.state.compact}
+                compact={this.props.compact}
                 dimensions={this.state.dimensions}
                 backupThumbnailUrl={item.backupThumbnailUrl}
                 thumbnailUrl={item.thumbnailUrl}

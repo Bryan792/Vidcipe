@@ -16,6 +16,8 @@ export const UNSET_FAVORITE = 'UNSET_FAVORITE'
 
 export const RELOAD_HOT = 'RELOAD_HOT'
 
+export const SET_POST_DISPLAY = 'SET_POST_DISPLAY'
+
 export const loadHotStart = createAction(LOAD_HOT)
 export const loadHotSuccess = createAction(LOAD_HOT_SUCCESS)
 export const loadHotAppendSuccess = createAction(LOAD_HOT_APPEND_SUCCESS)
@@ -25,6 +27,8 @@ export const setFavorite = createAction(SET_FAVORITE)
 export const unsetFavorite = createAction(UNSET_FAVORITE)
 
 export const reloadHot = createAction(RELOAD_HOT)
+
+export const setPostDisplay = createAction(SET_POST_DISPLAY)
 
 export const loadHot = force => async (dispatch, getState) => {
   function getUrl(after) {
@@ -97,6 +101,15 @@ export const loadHot = force => async (dispatch, getState) => {
 export const hidePost = post => (dispatch) => {
   realm.write(() => {
     post.isHidden = true
+  })
+  dispatch(reloadHot())
+}
+
+export const unhideAllPosts = () => (dispatch) => {
+  realm.write(() => {
+    realm.objects('Post').filtered('isHidden == true').forEach((post) => {
+      if (post) post.isHidden = false
+    })
   })
   dispatch(reloadHot())
 }
