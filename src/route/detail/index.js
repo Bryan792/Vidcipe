@@ -1,5 +1,9 @@
 import React from 'react'
-import { InteractionManager, View } from 'react-native'
+import {
+  InteractionManager,
+  View,
+  Share,
+} from 'react-native'
 import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'
 import { Toolbar } from 'react-native-material-ui'
@@ -97,6 +101,7 @@ export default class DetailView extends React.Component {
                 posts[this.state.index].favorite = !posts[this.state.index].favorite
               })
               // force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
+              this.forceUpdate()
             }
           }}
         />
