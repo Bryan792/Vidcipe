@@ -91,7 +91,7 @@ android {
         applicationId "com.vidcipe"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 6
+        versionCode 7
         versionName ANDROID_BUILD_VERSION_NAME
         ndk {
             abiFilters "armeabi-v7a", "x86"
