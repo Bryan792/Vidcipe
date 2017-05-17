@@ -2,6 +2,7 @@ import React from 'react'
 import {
   InteractionManager,
   View,
+  Share,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'
@@ -70,6 +71,7 @@ export default class DetailView extends React.Component {
   // TODO onPageScrollStateChanged is android only, need ios fix
   render() {
     let posts = this.props.posts.slice(0, this.props.length)
+    let currentPost = posts[this.state.index]
     let pages = []
     for (let index = 0; index < posts.length; index += 1) {
       pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= (this.state.placeholder ? 0 : 2) && (
@@ -90,14 +92,18 @@ export default class DetailView extends React.Component {
         <Toolbar
           leftElement="arrow-back"
           onLeftElementPress={() => this.props.navigation.goBack()}
-          centerElement={posts[this.state.index].title}
-          rightElement={['delete', posts[this.state.index].favorite ? 'star' : 'star-border']}
+          centerElement={currentPost.title}
+          rightElement={['share', 'delete', currentPost.favorite ? 'star' : 'star-border']}
           onRightElementPress={({ action }) => {
             if (action === 'delete') {
-              this.props.hidePost(posts[this.state.index])
-            } else {
+              this.props.hidePost(currentPost)
+            } else if (action === 'share') {
+              Share.share({
+                message: `${currentPost.title} https://reddit.com${currentPost.permalink}`,
+              })
+            } else if (action.startsWith('star')) {
               realm.write(() => {
-                posts[this.state.index].favorite = !posts[this.state.index].favorite
+                currentPost.favorite = !currentPost.favorite
               })
               // force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
               this.forceUpdate()
