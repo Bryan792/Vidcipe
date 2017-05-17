@@ -1,4 +1,5 @@
 import React from 'react'
+import codePush from 'react-native-code-push'
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -64,4 +65,4 @@ const wrapApp = AppComponent => () =>
     </ThemeProvider>
   </Provider>
 
-export default wrapApp(App)
+export default codePush(wrapApp(App))

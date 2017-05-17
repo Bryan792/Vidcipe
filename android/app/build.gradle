@@ -66,6 +66,7 @@ import com.android.build.OutputFile
  */
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -90,8 +91,8 @@ android {
         applicationId "com.vidcipe"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 5
-        versionName "BETA"
+        versionCode 6
+        versionName ANDROID_BUILD_VERSION_NAME
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -115,10 +116,23 @@ android {
         }
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            buildConfigField "String", "CODEPUSH_KEY", '""'
+        }
+
+        releaseStaging {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '"6BDBJMczm_A7EPwQtE_MeS-86jG14JNUnfzl7"'
+        }
+
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '"h_oZR-k1hcRc9fptIPQzCmm2NLDE4JNUnfzl7"'
         }
     }
     // applicationVariants are e.g. debug, release
@@ -137,6 +151,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-code-push')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-vector-icons')
     compile project(':realm')
