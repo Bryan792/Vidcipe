@@ -2,7 +2,6 @@ import React from 'react'
 import {
   InteractionManager,
   View,
-  Share,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'

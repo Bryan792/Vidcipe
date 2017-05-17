@@ -65,4 +65,13 @@ const wrapApp = AppComponent => () =>
     </ThemeProvider>
   </Provider>
 
-export default codePush(wrapApp(App))
+const WrappedApp = wrapApp(App)
+
+// eslint-disable-next-line react/prefer-stateless-function
+class AppWrapper extends React.PureComponent {
+  render() {
+    return <WrappedApp />
+  }
+}
+
+export default codePush(AppWrapper)
