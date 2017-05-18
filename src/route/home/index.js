@@ -1,27 +1,27 @@
 import React from 'react'
-import { View } from 'react-native'
+import {
+  View,
+} from 'react-native'
 import { connect } from 'react-redux'
-import { Toolbar } from 'react-native-material-ui'
+import {
+  COLOR,
+  Toolbar,
+} from 'react-native-material-ui'
+import { TabNavigator } from 'react-navigation'
 
 import { APP_NAME } from '../../config'
 
 import {
   loadHot,
-  search,
-  loadHotAppendSuccess,
-  setFavorite,
-  unsetFavorite,
 } from '../../action/hot'
-import Post from './post'
 
-import VirtualizedList from '../../../node_modules/react-native/Libraries/CustomComponents/Lists/VirtualizedList'
+import FavoriteList from './favorite'
+import NewList from './new'
+import TopList from './top'
 
 function mapStateToProps(state) {
   return {
-    posts: state.hot.get('posts'),
-    length: state.hot.get('length'),
     isRefreshing: state.hot.get('isRefreshing'),
-    filterFavorite: state.hot.get('filterFavorite'),
     reload: state.hot.get('reload'),
     compact: state.hot.get('compact'),
   }
@@ -31,100 +31,77 @@ function mapDispatchToProps(dispatch) {
   return {
     loadHot: () => dispatch(loadHot()),
     loadHotForce: () => dispatch(loadHot(true)),
-    loadHotAppend: () => dispatch(loadHotAppendSuccess()),
-    search: term => dispatch(search(term)),
-    setFilterFavorite: shouldSet => (shouldSet ? dispatch(setFavorite()) : dispatch(unsetFavorite())),
   }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class HomePage extends React.PureComponent {
-  state = {}
+type propTypes = {
+  navigation: {},
+  screenProps: {},
+}
 
-  componentDidMount() {
-    this.props.loadHot()
+const TabContent = TabNavigator({
+  New: {
+    screen: ({ navigation, screenProps }: propTypes) => <NewList screenProps={{ parentNavigation: navigation, ...screenProps }} />,
+  },
+  Top: {
+    screen: ({ navigation, screenProps }: propTypes) => <TopList screenProps={{ parentNavigation: navigation, ...screenProps }} />,
+  },
+  Favorite: {
+    screen: ({ navigation, screenProps }: propTypes) => <FavoriteList screenProps={{ parentNavigation: navigation, ...screenProps }} />,
+  },
+}, {
+  tabBarPosition: 'bottom',
+  tabBarOptions: {
+    // TODO: Somehow get actual color
+    style: {
+      backgroundColor: COLOR.green500,
+    },
+  },
+})
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class extends React.PureComponent {
+  state = {
+    isSearchOpen: false,
   }
 
   props: {
-    posts: [],
-    loadHot: Function,
-    length: number,
-    search: Function,
-    filterFavorite: boolean,
-    setFilterFavorite: Function,
     navigation: {
       navigate: Function,
-    },
-    isRefreshing: boolean,
-    loadHotForce: Function,
-    loadHotAppend: Function,
-    compact: boolean,
-  }
-
-  timeout = undefined;
-  _onLayout = (event) => {
-    if (this.state.dimensions) return // layout was already called
-    let { width, height } = event.nativeEvent.layout
-    this.setState({ dimensions: { width, height } })
+    }
   }
 
   render() {
-    let posts = this.props.posts.slice(0, this.props.length)
     return (
       <View
         style={{
           flex: 1,
+          backgroundColor: 'white',
         }}
       >
         <Toolbar
           centerElement={APP_NAME}
-          searchable={{
-            placeholder: 'Search',
-            onChangeText: (text) => {
-              clearTimeout(this.timeout)
-              this.timeout = setTimeout(() => {
-                this.props.search(text.trim())
-              }, 700)
-            },
-            onSearchClosed: () => {
-              clearTimeout(this.timeout)
-              this.props.search()
-            },
-          }}
-          rightElement={[this.props.filterFavorite ? 'star' : 'star-border', 'more-vert']}
+          rightElement={['search', 'more-vert']}
           onRightElementPress={({ action }) => {
-            if (action.startsWith('star')) {
-              this.props.setFilterFavorite(!this.props.filterFavorite)
-            } else if (action === 'more-vert') {
-              this.props.navigation.navigate('Settings')
+            switch (action) {
+              case 'more-vert':
+                this.props.navigation.navigate('Settings')
+                break
+              case 'search':
+                this.props.navigation.navigate('Search')
+                break
+              default:
+                break
             }
           }}
         />
-
-        <VirtualizedList
-          maxToRenderPerBatch={2}
-          onLayout={this._onLayout}
-          data={posts}
-          renderItem={({ item, index }) => (
-              <Post
-                compact={this.props.compact}
-                dimensions={this.state.dimensions}
-                backupThumbnailUrl={item.backupThumbnailUrl}
-                thumbnailUrl={item.thumbnailUrl}
-                thumbnailWidth={item.thumbnailWidth}
-                thumbnailHeight={item.thumbnailHeight}
-                score={item.score}
-                title={item.title}
-                onPostSelected={() => {
-                  this.props.navigation.navigate('Detail', { index })
-                }}
-              />
-          )}
-          refreshing={this.props.isRefreshing}
-          onRefresh={this.props.loadHotForce}
-          onEndReached={this.props.loadHotAppend}
-          keyExtractor={item => item.id}
-        />
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <TabContent screenProps={{ navigation: this.props.navigation }} />
+        </View>
       </View>
     )
   }

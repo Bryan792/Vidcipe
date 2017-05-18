@@ -57,6 +57,7 @@ export default class SettingsPage extends React.PureComponent { // eslint-disabl
       <View
         style={{
           flex: 1,
+          backgroundColor: 'white',
         }}
       >
         <Toolbar

@@ -21,7 +21,6 @@ import {
 
 function mapStateToProps(state) {
   return {
-    posts: state.hot.get('posts'),
     length: state.hot.get('length'),
     reload: state.hot.get('reload'),
   }
@@ -53,12 +52,12 @@ export default class DetailView extends React.Component {
       state: {
         params: {
           index: string,
+          posts: [],
         }
       },
       goBack: Function,
     },
     posts: [],
-    length: number,
     hidePost: Function,
   }
 
@@ -70,9 +69,10 @@ export default class DetailView extends React.Component {
 
   // TODO onPageScrollStateChanged is android only, need ios fix
   render() {
-    let posts = this.props.posts.slice(0, this.props.length)
+    let posts = this.props.navigation.state.params.posts
     let currentPost = posts[this.state.index]
     let pages = []
+    // TODO: ideally we want pages to be dynamic but for some reason, the rerender only works at the initial size of pages, so even if we increase pages later, the viewpager does not see past the initial size, so for now we will have the posts sent in be already sliced, we cannot resize
     for (let index = 0; index < posts.length; index += 1) {
       pages.push(this.state.dimensions && Math.abs(this.state.index - index) <= (this.state.placeholder ? 0 : 2) && (
           <DetailPage
@@ -87,6 +87,7 @@ export default class DetailView extends React.Component {
       <View
         style={{
           flex: 1,
+          backgroundColor: 'white',
         }}
       >
         <Toolbar
