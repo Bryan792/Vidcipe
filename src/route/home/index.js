@@ -21,7 +21,6 @@ import TopList from './top'
 
 function mapStateToProps(state) {
   return {
-    isRefreshing: state.hot.get('isRefreshing'),
     reload: state.hot.get('reload'),
     compact: state.hot.get('compact'),
   }
@@ -30,7 +29,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadHot: () => dispatch(loadHot()),
-    loadHotForce: () => dispatch(loadHot(true)),
   }
 }
 
@@ -65,7 +63,12 @@ export default class extends React.PureComponent {
     isSearchOpen: false,
   }
 
+  componentDidMount() {
+    this.props.loadHot()
+  }
+
   props: {
+    loadHot: Function,
     navigation: {
       navigate: Function,
     }
