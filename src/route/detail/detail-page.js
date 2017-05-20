@@ -195,7 +195,7 @@ export default class DetailPage extends React.PureComponent {
               <View key={comment.body}>
                 <CommentBox>
                   <CommentAuthor>{comment.author}</CommentAuthor>
-                  <CommentBody>{comment.body}</CommentBody>
+                  <CommentBody selectable>{comment.body}</CommentBody>
                 </CommentBox>
                 <Divider />
               </View>
