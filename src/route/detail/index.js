@@ -23,7 +23,6 @@ import {
 function mapStateToProps(state) {
   return {
     length: state.hot.get('length'),
-    reload: state.hot.get('reload'),
   }
 }
 
@@ -41,6 +40,8 @@ export default class DetailView extends React.Component {
   state={
     index: +this.props.navigation.state.params.index,
     renderPlaceholderOnly: true,
+    // When you slice a RealmResults, properties are still cross-referenced with the db, but the actual query will not be run again, so we need to manually remove when we choose to remove
+    posts: this.props.navigation.state.params.posts.slice(0, this.props.navigation.state.params.length),
   }
 
   componentDidMount() {
@@ -84,7 +85,7 @@ export default class DetailView extends React.Component {
 
   // TODO onPageScrollStateChanged is android only, need ios fix
   render() {
-    let posts = this.props.navigation.state.params.posts.slice(0, this.props.navigation.state.params.length)
+    let posts = this.state.posts
     let currentPost = posts[this.state.index]
     let pages = []
     // TODO: ideally we want pages to be dynamic but for some reason, the rerender only works at the initial size of pages, so even if we increase pages later, the viewpager does not see past the initial size, so for now we will have the posts sent in be already sliced, we cannot resize
@@ -113,6 +114,16 @@ export default class DetailView extends React.Component {
           onRightElementPress={({ action }) => {
             if (action === 'delete') {
               this.props.hidePost(currentPost)
+              if (posts.length === 1) {
+                this.props.navigation.goBack()
+              } else {
+                let newPosts = this.state.posts.slice()
+                newPosts.splice(this.state.index, 1)
+                this.setState({
+                  posts: newPosts,
+                  index: (this.state.index === posts.length - 1) ? this.state.index - 1 : this.state.index,
+                })
+              }
             } else if (action === 'share') {
               Share.share({
                 message: `${currentPost.title} https://reddit.com${currentPost.permalink}`,
