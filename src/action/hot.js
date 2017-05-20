@@ -26,7 +26,7 @@ export const setPostDisplay = createAction(SET_POST_DISPLAY)
 
 export const loadHot = force => async (dispatch, getState) => {
   function getUrl(after) {
-    return `https://www.reddit.com/r/gifrecipes.json?limit=50&raw_json=1'${after ? `&after=${after}` : ''}`
+    return `https://www.reddit.com/r/gifrecipes/new/.json?limit=50&raw_json=1'${after ? `&after=${after}` : ''}`
   }
 
   if (getState().hot.get('isRefreshing')) return
