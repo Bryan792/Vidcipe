@@ -63,7 +63,8 @@ export default class extends React.Component {
                 score={item.score}
                 title={item.title}
                 onPostSelected={() => {
-                  this.props.screenProps.navigation.navigate('Detail', { index, posts: this.props.posts.slice(0, this.state.length) })
+                  // Sending a sliced posts seems to change the arraylike Results to an actual array that no longer autoupdates, letting details slice it themsleves
+                  this.props.screenProps.navigation.navigate('Detail', { index, posts: this.props.posts, length: this.state.length })
                 }}
               />
           )}

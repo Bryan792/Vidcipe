@@ -13,6 +13,7 @@ import DetailPage from './detail-page'
 
 import {
   hidePost,
+  reloadHot,
 } from '../../action/hot'
 
 import {
@@ -30,6 +31,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadDetail: id => dispatch(loadDetail(id)),
     hidePost: post => dispatch(hidePost(post)),
+    reloadPosts: () => dispatch(reloadHot()),
   }
 }
 
@@ -47,18 +49,31 @@ export default class DetailView extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    // We use this as a notification mechanism to reload posts
+    // We decide to only notify on unmount because we do not want the posts to reload while we are viewing them, but only in this scenario
+    // We favorite something, but if we are viewing the favorite list, we do not wan the list to change
+    // On the other hand, if we are hiding a post, we want the change immediately
+    // TODO: This breaks if you favorite a bunch, but somehow cause a reload by deleting something
+    if (this.state.favoriteChanged) {
+      this.props.reloadPosts()
+    }
+  }
+
   props: {
     navigation: {
       state: {
         params: {
           index: string,
           posts: [],
+          length: number,
         }
       },
       goBack: Function,
     },
     posts: [],
     hidePost: Function,
+    reloadPosts: Function,
   }
 
   _onLayout = (event) => {
@@ -69,7 +84,7 @@ export default class DetailView extends React.Component {
 
   // TODO onPageScrollStateChanged is android only, need ios fix
   render() {
-    let posts = this.props.navigation.state.params.posts
+    let posts = this.props.navigation.state.params.posts.slice(0, this.props.navigation.state.params.length)
     let currentPost = posts[this.state.index]
     let pages = []
     // TODO: ideally we want pages to be dynamic but for some reason, the rerender only works at the initial size of pages, so even if we increase pages later, the viewpager does not see past the initial size, so for now we will have the posts sent in be already sliced, we cannot resize
@@ -106,7 +121,8 @@ export default class DetailView extends React.Component {
               realm.write(() => {
                 currentPost.favorite = !currentPost.favorite
               })
-              // force update instead of this.setState(this.state) because future logic (PureComponent) might check state and there is no change in the state
+              // TODO this is ugly, we shouldnt use forceUpdate
+              this.setState({ favoriteChanged: true })
               this.forceUpdate()
             }
           }}
