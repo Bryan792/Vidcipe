@@ -8,10 +8,10 @@ Powered by React Native
 
 ![Demo](/screenshots/demo.gif)
 
-![Screenshot](/screenshots/Screenshot_20170520-194617.png)
-![Screenshot](/screenshots/Screenshot_20170520-194630.png)
-![Screenshot](/screenshots/Screenshot_20170520-194642.png)
-![Screenshot](/screenshots/Screenshot_20170520-194808.png)
+<img src="/screenshots/Screenshot_20170520-194617.png" width="180">
+<img src="/screenshots/Screenshot_20170520-194630.png" width="180">
+<img src="/screenshots/Screenshot_20170520-194642.png" width="180">
+<img src="/screenshots/Screenshot_20170520-194808.png" width="180">
 
 ### Tech
 
